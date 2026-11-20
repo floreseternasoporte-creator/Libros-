@@ -288,7 +288,7 @@ async function searchContent(query) {
         const storyCard = document.createElement('div');
         storyCard.className = 'cursor-pointer';
         storyCard.innerHTML = `
-          <img src="${story.coverImage || 'https://via.placeholder.com/150'}" 
+          <img src="${story.coverImage || 'cover.svg'}" 
                class="w-full aspect-[3/4] object-cover rounded-lg" 
                alt="${story.title || 'Historia'}">
         `;
@@ -327,7 +327,7 @@ async function searchContent(query) {
         const authorCard = document.createElement('div');
         authorCard.className = 'flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer';
         authorCard.innerHTML = `
-          <img src="${user.profileImage || 'https://via.placeholder.com/40'}"
+          <img src="${user.profileImage || 'avatar.svg'}"
                class="w-12 h-12 rounded-full object-cover"
                alt="${user.username}">
           <div class="flex-1">
@@ -397,7 +397,7 @@ async function loadPopularStories() {
         const storyCard = document.createElement('div');
         storyCard.className = 'cursor-pointer';
         storyCard.innerHTML = `
-          <img src="${story.coverImage || 'https://via.placeholder.com/150'}" 
+          <img src="${story.coverImage || 'cover.svg'}" 
                class="w-full aspect-[3/4] object-cover rounded-lg" 
                alt="${story.title || 'Historia'}">
         `;

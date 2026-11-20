@@ -74,7 +74,7 @@ exports.handler = async (event) => {
       const note = {
         userId,
         authorName: authorName || body.username || 'Usuario',
-        authorImage: authorImage || 'https://via.placeholder.com/150',
+        authorImage: authorImage || 'avatar.svg',
         content,
         imageUrl,
         imageData,

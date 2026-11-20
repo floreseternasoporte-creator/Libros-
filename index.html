@@ -7,8 +7,6 @@
   <title>Relumia - Historias y Relatos</title>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4653147807800151" crossorigin="anonymous"></script>
-  <!-- reCAPTCHA API (v2 + v3) -->
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
@@ -1946,7 +1944,7 @@ setInterval(checkScheduledChapters, 60000);
       </div>
       <div class="p-4">
         <div id="menu-profile-editor-photo" class="hidden text-center">
-          <img id="menu-profile-photo-preview" src="https://via.placeholder.com/140" class="w-32 h-32 rounded-full mx-auto object-cover border-2 border-gray-200 mb-4" alt="Foto de perfil">
+          <img id="menu-profile-photo-preview" src="avatar.svg" class="w-32 h-32 rounded-full mx-auto object-cover border-2 border-gray-200 mb-4" alt="Foto de perfil">
           <input type="file" id="menu-edit-photo-input" accept="image/*" class="hidden" onchange="previewMenuProfilePhoto(event)">
           <button onclick="document.getElementById('menu-edit-photo-input').click()" class="px-5 py-2 rounded-lg bg-gray-100 text-gray-900 font-medium">Seleccionar foto</button>
         </div>
@@ -2188,7 +2186,7 @@ setInterval(checkScheduledChapters, 60000);
     <div class="flex-1 flex flex-col items-center justify-center p-6">
       <!-- Avatar y nombre -->
       <div class="text-center mb-6">
-        <img id="qr-user-avatar" src="https://via.placeholder.com/80" class="w-20 h-20 rounded-full mx-auto mb-3 border-2 border-gray-200">
+        <img id="qr-user-avatar" src="avatar.svg" class="w-20 h-20 rounded-full mx-auto mb-3 border-2 border-gray-200">
         <h2 id="qr-username" class="text-xl font-semibold text-gray-900 mb-1">@usuario</h2>
         <p class="text-gray-500 text-sm">Comparte tu perfil con otros</p>
       </div>
@@ -2312,7 +2310,7 @@ setInterval(checkScheduledChapters, 60000);
       const userData = snapshot.val();
       if (userData) {
         document.getElementById('qr-username').textContent = '@' + (userData.username || 'usuario');
-        document.getElementById('qr-user-avatar').src = userData.profileImage || 'https://via.placeholder.com/80';
+        document.getElementById('qr-user-avatar').src = userData.profileImage || 'avatar.svg';
       }
     });
 
@@ -2551,7 +2549,7 @@ setInterval(checkScheduledChapters, 60000);
     </div>
   </div>
 
-  <!-- Pantalla de verificación reCAPTCHA para correo -->
+  <!-- Pantalla de verificación hCaptcha para correo -->
   <div id="email-captcha-form" class="w-full h-screen flex flex-col bg-white hidden">
     <div class="p-4 border-b border-gray-200">
       <div class="flex items-center justify-between">
@@ -2686,9 +2684,6 @@ setInterval(checkScheduledChapters, 60000);
       </div>
 
       <div id="captcha-container" class="mb-6">
-        <!-- reCAPTCHA se renderizará aquí -->
-        <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-callback="onCaptchaSuccess"></div>
-        <p class="text-xs text-gray-500 mt-3 text-center">Esta demostración usa una clave de reCAPTCHA pública para pruebas</p>
       </div>
 
       <div id="captcha-status" class="mb-4"></div>
@@ -2856,11 +2851,6 @@ setInterval(checkScheduledChapters, 60000);
       }
     }
 
-    #captcha-modal .g-recaptcha {
-      display: flex;
-      justify-content: center;
-    }
-
     #math-problem {
       font-family: 'Courier New', monospace;
       letter-spacing: 2px;
@@ -2975,7 +2965,7 @@ function loadFollowingStories() {
           }
 
           imageContainer.innerHTML = `
-            <img src="${userData.profileImage || 'https://via.placeholder.com/150'}"
+            <img src="${userData.profileImage || 'avatar.svg'}"
                  alt="${userData.username}"
                  class="w-full h-full object-cover"
                  onclick="openLatestStory('${followedUserId}', '${latestStoryId}')">
@@ -3114,7 +3104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <!-- BOTTOM NAVIGATION ESTILO UBER -->
   <div id="bottom-nav" class="fixed bottom-0 left-0 right-0 bg-white border-t border-uber-line transition-all duration-300 z-[100] shadow-uber-header">
-    <div class="grid grid-cols-5 px-2 py-2 gap-1">
+    <div class="grid grid-cols-6 px-2 py-2 gap-1">
       <button id="nav-home" data-section="home" class="nav-button flex flex-col items-center py-2 px-1 rounded-xl transition-colors duration-200 active">
         <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24">
           <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
@@ -3142,6 +3132,12 @@ document.addEventListener('DOMContentLoaded', () => {
           <circle cx="9" cy="7" r="4" />
         </svg>
         <span class="text-xs font-medium">Comunidad</span>
+      </button>
+      <button id="nav-library" data-section="library" class="nav-button flex flex-col items-center py-2 px-1 rounded-xl transition-colors duration-200">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+        </svg>
+        <span class="text-xs font-medium">Biblioteca</span>
       </button>
       <button id="nav-alerts" data-section="alerts" class="nav-button flex flex-col items-center py-2 px-1 rounded-xl transition-colors duration-200">
         <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -3280,6 +3276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'search': openSearch(); break;
         case 'create': openCreatorHub(); break;
         case 'community': openCommunity(); break;
+        case 'library': openLibrary(); break;
         case 'alerts': openNotifications(); break;
       }
     }
@@ -3655,34 +3652,20 @@ async function generateStory() {
     });
 
     const data = await response.json();
-    const story = data.content || data.raw?.choices?.[0]?.message?.content || generarHistoriaLocal(genre, theme, length);
+    const story = data.content || data.raw?.choices?.[0]?.message?.content;
+    if (!story) throw new Error('La IA no respondió');
 
     document.getElementById('story-output').textContent = story;
     document.getElementById('generated-story-result').classList.remove('hidden');
 
   } catch (error) {
     console.error('Error:', error);
-    const story = generarHistoriaLocal(genre, theme, length);
-    document.getElementById('story-output').textContent = story;
+    document.getElementById('story-output').textContent = 'La IA no está disponible en este momento. Inténtalo más tarde.';
     document.getElementById('generated-story-result').classList.remove('hidden');
   } finally {
     btn.disabled = false;
     btn.innerHTML = originalText;
   }
-}
-
-function generarHistoriaLocal(genre, theme, length) {
-  const historias = {
-    fantasia: `En un reino olvidado donde ${theme}, un joven héroe descubre un antiguo secreto que cambiará su destino para siempre. Con la ayuda de aliados inesperados y enfrentando peligros inimaginables, debe encontrar el coraje para salvar su mundo de la oscuridad que amenaza con consumirlo todo.`,
-    'ciencia-ficcion': `En el año 2157, cuando ${theme}, la humanidad se encuentra al borde de un descubrimiento que redefinirá su existencia. Un científico brillante debe tomar decisiones imposibles mientras navega por las complejidades de la tecnología avanzada y los dilemas éticos que esta presenta.`,
-    romance: `Cuando ${theme}, dos almas destinadas se encuentran en las circunstancias más inesperadas. A través de obstáculos, malentendidos y momentos de pura magia, descubren que el amor verdadero puede superar cualquier barrera.`,
-    terror: `En la oscuridad de la noche, donde ${theme}, comienza una pesadilla que desafía toda lógica. Lo que parecía ser una noche tranquila se convierte en una lucha desesperada por la supervivencia contra fuerzas que no deberían existir.`,
-    misterio: `Cuando ${theme}, un detective perspicaz se ve envuelto en un caso que desafía toda explicación. Cada pista revela más preguntas que respuestas, y la verdad resulta ser más sorprendente de lo que nadie podía imaginar.`,
-    aventura: `En tierras inexploradas donde ${theme}, un grupo de valientes aventureros emprende un viaje épico. Enfrentando peligros naturales, enemigos formidables y sus propios miedos, descubren que el verdadero tesoro es el camino que recorren juntos.`,
-    drama: `En medio de ${theme}, vidas entrelazadas enfrentan decisiones que cambiarán su futuro. Entre conflictos personales, secretos revelados y momentos de profunda humanidad, cada personaje debe encontrar su propio camino hacia la redención.`
-  };
-
-  return historias[genre] || historias.fantasia;
 }
 
 function copyStory() {
@@ -3720,26 +3703,18 @@ async function generateCharacter() {
     });
 
     const data = await response.json();
-    const character = data.content || data.raw?.choices?.[0]?.message?.content || generarPersonajeLocal(type, traits);
+    const character = data.content || data.raw?.choices?.[0]?.message?.content;
+    if (!character) throw new Error('La IA no respondió');
 
     mostrarPersonaje(character);
 
   } catch (error) {
     console.error('Error:', error);
-    const character = generarPersonajeLocal(type, traits);
-    mostrarPersonaje(character);
+    mostrarPersonaje('La IA no está disponible en este momento. Inténtalo más tarde.');
   } finally {
     btn.disabled = false;
     btn.innerHTML = originalText;
   }
-}
-
-function generarPersonajeLocal(type, traits) {
-  const nombres = ['Aria', 'Kael', 'Luna', 'Draven', 'Seraphina', 'Thorne', 'Nova', 'Zephyr'];
-  const nombre = nombres[Math.floor(Math.random() * nombres.length)];
-  const edad = Math.floor(Math.random() * 30) + 18;
-
-  return `**Nombre:** ${nombre}\n**Edad:** ${edad} años\n**Tipo:** ${type}\n**Características:** ${traits || 'Misterioso y carismático'}\n**Apariencia:** Cabello oscuro, ojos penetrantes, porte distinguido\n**Personalidad:** Determinado, inteligente, con un pasado complejo\n**Habilidades:** Estrategia, liderazgo, combate\n**Debilidades:** Confianza excesiva, recuerdos dolorosos\n**Historia:** Criado en circunstancias difíciles, ha forjado su propio camino\n**Motivación:** Busca redención y un propósito mayor`;
 }
 
 function mostrarPersonaje(character) {
@@ -3790,34 +3765,20 @@ async function generatePlotTwist() {
     });
 
     const data = await response.json();
-    const twist = data.content || data.raw?.choices?.[0]?.message?.content || generarGiroLocal();
+    const twist = data.content || data.raw?.choices?.[0]?.message?.content;
+    if (!twist) throw new Error('La IA no respondió');
 
     document.getElementById('twist-output').textContent = twist;
     document.getElementById('generated-twist-result').classList.remove('hidden');
 
   } catch (error) {
     console.error('Error:', error);
-    const twist = generarGiroLocal();
-    document.getElementById('twist-output').textContent = twist;
+    document.getElementById('twist-output').textContent = 'La IA no está disponible en este momento. Inténtalo más tarde.';
     document.getElementById('generated-twist-result').classList.remove('hidden');
   } finally {
     btn.disabled = false;
     btn.innerHTML = originalText;
   }
-}
-
-function generarGiroLocal() {
-  const giros = [
-    'El mentor del protagonista resulta ser el verdadero villano que ha estado manipulando los eventos desde el principio.',
-    'Todo lo que ha sucedido es en realidad una simulación, y el protagonista está a punto de despertar en un mundo completamente diferente.',
-    'El antagonista y el protagonista son en realidad la misma persona de líneas temporales diferentes.',
-    'La persona que parecía ser el villano estaba en realidad protegiendo al mundo de una amenaza aún mayor.',
-    'El protagonista descubre que tiene un hermano gemelo que ha estado viviendo su vida en paralelo.',
-    'La historia entera ha sido narrada desde la perspectiva del villano, y el "héroe" es en realidad el antagonista.',
-    'El mundo en el que viven los personajes está dentro de un libro que alguien está escribiendo en tiempo real.',
-    'El mejor amigo del protagonista ha estado muerto todo el tiempo, y solo él puede verlo.'
-  ];
-  return giros[Math.floor(Math.random() * giros.length)];
 }
 
 function copyTwist() {
@@ -3855,30 +3816,18 @@ async function generateWorld() {
     });
 
     const data = await response.json();
-    const world = data.content || data.raw?.choices?.[0]?.message?.content || generarMundoLocal(type, elements);
+    const world = data.content || data.raw?.choices?.[0]?.message?.content;
+    if (!world) throw new Error('La IA no respondió');
 
     mostrarMundo(world);
 
   } catch (error) {
     console.error('Error:', error);
-    const world = generarMundoLocal(type, elements);
-    mostrarMundo(world);
+    mostrarMundo('La IA no está disponible en este momento. Inténtalo más tarde.');
   } finally {
     btn.disabled = false;
     btn.innerHTML = originalText;
   }
-}
-
-function generarMundoLocal(type, elements) {
-  const mundos = {
-    fantasia: `**Nombre:** Aethermoor\n**Geografía:** Continente dividido por montañas mágicas y bosques ancestrales\n**Clima:** Variado, con zonas de eterna primavera y regiones de niebla perpetua\n**Sistema Político:** Reinos unidos bajo un consejo de magos\n**Cultura:** Sociedad basada en el honor y la magia\n**Magia:** Energía elemental canalizada a través de cristales antiguos\n**Especies:** Humanos, elfos, enanos, y criaturas míticas\n**Conflicto:** La magia está desapareciendo misteriosamente`,
-    futurista: `**Nombre:** Neo-Terra\n**Geografía:** Megaciudades verticales conectadas por redes de transporte cuántico\n**Clima:** Controlado artificialmente\n**Sistema Político:** Corporatocracia con IA gobernante\n**Cultura:** Sociedad hiperconectada y transhumanista\n**Tecnología:** Implantes neuronales, realidad aumentada, viajes espaciales\n**Especies:** Humanos mejorados, androides conscientes\n**Conflicto:** Lucha por la identidad humana en la era de la IA`,
-    'post-apocaliptico': `**Nombre:** Las Tierras Rotas\n**Geografía:** Ruinas de ciudades antiguas, desiertos radiactivos\n**Clima:** Extremo e impredecible\n**Sistema Político:** Tribus y facciones en constante conflicto\n**Cultura:** Supervivencia y adaptación\n**Tecnología:** Mezcla de tecnología salvada y primitiva\n**Especies:** Humanos mutados, criaturas evolucionadas\n**Conflicto:** Recursos escasos y secretos del pasado`,
-    magico: `**Nombre:** Lumina\n**Geografía:** Mundo paralelo que se superpone con la realidad\n**Clima:** Influenciado por emociones colectivas\n**Sistema Político:** Democracia oculta de magos\n**Cultura:** Coexistencia secreta con el mundo mundano\n**Magia:** Sutil, entretejida en la vida cotidiana\n**Especies:** Humanos con diferentes niveles de sensibilidad mágica\n**Conflicto:** Mantener el equilibrio entre ambos mundos`,
-    steampunk: `**Nombre:** Engranaje Prime\n**Geografía:** Imperio industrial con ciudades de vapor y engranajes\n**Clima:** Perpetuamente nublado por la industria\n**Sistema Político:** Monarquía industrial\n**Cultura:** Era victoriana con tecnología avanzada de vapor\n**Tecnología:** Máquinas de vapor, autómatas, dirigibles\n**Especies:** Humanos, autómatas conscientes\n**Conflicto:** Revolución de los trabajadores contra la aristocracia`
-  };
-
-  return mundos[type] || mundos.fantasia;
 }
 
 function mostrarMundo(world) {
@@ -4247,7 +4196,7 @@ function sendChatMessage() {
     removeTypingAnimation();
 
     // Usar respuestas inteligentes locales
-    const aiResponse = getSmartLocalResponse(userMessage);
+    const aiResponse = 'La IA no está disponible en este momento. Inténtalo más tarde.';
 
     const aiMsg = document.createElement('div');
     aiMsg.className = 'flex items-start space-x-3';
@@ -4270,74 +4219,6 @@ function sendChatMessage() {
     messagesContainer.appendChild(aiMsg);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
-}
-
-function getSmartLocalResponse(message) {
-  const msg = message.toLowerCase();
-
-  // Respuestas sobre escritura
-  if (msg.includes('escribir') || msg.includes('historia') || msg.includes('cuento')) {
-    const responses = [
-      '¡Excelente pregunta! Para escribir una buena historia, comienza con un personaje interesante y un conflicto que resolver. ¿Qué tipo de historia quieres crear?',
-      'La clave está en crear personajes con los que los lectores puedan conectar. Piensa en sus motivaciones, miedos y deseos. ¿Necesitas ayuda con algún personaje?',
-      'Un buen inicio es crucial. Intenta comenzar con una escena que enganche al lector desde la primera línea. ¿Quieres que te dé ejemplos?'
-    ];
-    return responses[Math.floor(Math.random() * responses.length)];
-  }
-
-  // Respuestas sobre ideas
-  if (msg.includes('idea') || msg.includes('inspiración') || msg.includes('tema')) {
-    const responses = [
-      '¡Claro! Aquí hay una idea: Un mundo donde los sueños se pueden robar y vender. ¿Qué pasaría si alguien robara tu mejor sueño?',
-      '¿Qué tal esto? Una persona descubre que puede ver 5 minutos en el futuro, pero solo cuando está en peligro. ¿Cómo usarías ese poder?',
-      'Idea interesante: En una ciudad donde está prohibido llorar, alguien descubre que sus lágrimas tienen poderes mágicos. ¿Te gusta?'
-    ];
-    return responses[Math.floor(Math.random() * responses.length)];
-  }
-
-  // Respuestas sobre personajes
-  if (msg.includes('personaje') || msg.includes('protagonista') || msg.includes('héroe')) {
-    const responses = [
-      'Los mejores personajes tienen defectos que los hacen humanos. Piensa en qué los hace vulnerables y qué los hace fuertes.',
-      'Dale a tu personaje un objetivo claro y obstáculos que superar. La tensión entre lo que quieren y lo que los detiene crea drama.',
-      'Un buen personaje cambia a lo largo de la historia. ¿Cómo será diferente tu protagonista al final?'
-    ];
-    return responses[Math.floor(Math.random() * responses.length)];
-  }
-
-  // Respuestas sobre géneros
-  if (msg.includes('terror') || msg.includes('miedo') || msg.includes('horror')) {
-    return 'El terror funciona mejor cuando sugieres más de lo que muestras. Deja que la imaginación del lector haga el trabajo. ¿Quieres consejos específicos?';
-  }
-
-  if (msg.includes('romance') || msg.includes('amor')) {
-    return 'En el romance, la química entre personajes es clave. Crea momentos de tensión, malentendidos y conexión emocional. ¿En qué necesitas ayuda?';
-  }
-
-  if (msg.includes('fantasía') || msg.includes('magia')) {
-    return 'En fantasía, establece reglas claras para tu sistema de magia. La consistencia es importante para que los lectores crean en tu mundo.';
-  }
-
-  // Saludos
-  if (msg.includes('hola') || msg.includes('hey') || msg.includes('hi')) {
-    return '¡Hola! 🚀 Soy Relumia AI. Puedo ayudarte a crear historias, generar ideas o crear imágenes. ¿En qué te ayudo hoy?';
-  }
-
-  // Agradecimientos
-  if (msg.includes('gracias') || msg.includes('thanks')) {
-    return '¡De nada! Estoy aquí para ayudarte. ¿Necesitas algo más? 🚀';
-  }
-
-  // Respuesta genérica inteligente
-  const genericResponses = [
-    'Interesante pregunta. ¿Podrías darme más detalles para ayudarte mejor?',
-    'Entiendo. ¿Esto es para una historia que estás escribiendo? Puedo darte ideas específicas.',
-    '¡Me gusta por dónde vas! Cuéntame más sobre lo que tienes en mente.',
-    'Esa es una buena dirección. ¿Quieres que exploremos esa idea juntos?',
-    'Puedo ayudarte con eso. También puedo generar imágenes si me dices "genera una imagen de..." 🎨'
-  ];
-
-  return genericResponses[Math.floor(Math.random() * genericResponses.length)];
 }
 
 function showTypingAnimation() {
@@ -4689,6 +4570,24 @@ function escapeHtml(text) {
 </style>
 
 
+
+
+<!-- Vista Biblioteca - estilo Wattpad -->
+<div id="library-view" class="fixed inset-0 bg-uber-surface overflow-y-auto hidden z-50">
+  <div class="sticky top-0 bg-white border-b border-uber-line px-4 py-3 z-10 shadow-uber-header">
+    <div class="flex items-center justify-between">
+      <h1 class="text-xl font-bold">Mi Biblioteca</h1>
+    </div>
+  </div>
+  <div class="p-4 pb-24">
+    <p class="text-sm text-uber-muted mb-4">Las historias que guardes aparecerán aquí para leerlas cuando quieras.</p>
+    <div id="library-list" class="space-y-3"></div>
+    <div id="library-empty" class="hidden text-center py-12">
+      <p class="text-gray-500">Tu biblioteca está vacía.</p>
+      <p class="text-sm text-gray-400 mt-1">Guarda una historia desde su detalle para verla aquí.</p>
+    </div>
+  </div>
+</div>
 
 
 <!-- Search View - Estilo Uber -->
@@ -5519,7 +5418,7 @@ window.fetchSearchInfoFromWikipedia = async function(query) {
         'digital-art': 'digital art, concept art, artstation quality'
       };
 
-      // Lista de servicios de IA gratuitos para probar
+      // Servicio de IA gratuito para generar imágenes
       const aiServices = [
         {
           name: 'Pollinations AI',
@@ -5527,12 +5426,6 @@ window.fetchSearchInfoFromWikipedia = async function(query) {
             const styleEnhancement = stylePrompts[style] || 'high quality, detailed';
             const enhancedPrompt = `${prompt}, ${styleEnhancement}`;
             return `https://image.pollinations.ai/prompt/${encodeURIComponent(enhancedPrompt)}?width=512&height=512&seed=${Math.floor(Math.random() * 1000000)}&nologo=true`;
-          }
-        },
-        {
-          name: 'Picsum Photos',
-          url: (prompt, style) => {
-            return `https://picsum.photos/512/512?random=${Math.floor(Math.random() * 1000000)}`;
           }
         }
       ];
@@ -6568,7 +6461,7 @@ window.fetchSearchInfoFromWikipedia = async function(query) {
       <!-- Sección de perfil -->
       <div class="mb-4">
         <div class="flex flex-col items-center text-center mb-4">
-          <img id="profile-image" src="https://via.placeholder.com/150" class="w-24 h-24 rounded-full object-cover" style="border: 2px solid #00A2FF;" alt="Foto de perfil">
+          <img id="profile-image" src="avatar.svg" class="w-24 h-24 rounded-full object-cover" style="border: 2px solid #00A2FF;" alt="Foto de perfil">
           <h2 id="profile-display-name" class="font-semibold text-gray-900 mt-3">Nombre</h2>
           <p id="profile-username" class="text-sm text-gray-600">@nombre_usuario</p>
         </div>
@@ -6641,7 +6534,7 @@ window.fetchSearchInfoFromWikipedia = async function(query) {
           <div class="relative">
 
             <div class="relative block">
-              <img id="profile-image-desktop" src="https://via.placeholder.com/120" class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg relative z-0" alt="Foto de perfil">
+              <img id="profile-image-desktop" src="avatar.svg" class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg relative z-0" alt="Foto de perfil">
             </div>
 
           </div>
@@ -6833,7 +6726,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </button>
     <div class="flex flex-col items-center">
       <div class="relative">
-        <img id="edit-profile-image-mobile" src="https://via.placeholder.com/150" class="w-24 h-24 rounded-full object-cover border-2 border-[#00A2FF] cursor-pointer" alt="Foto de perfil" onclick="openPhotoOptionsModal()">
+        <img id="edit-profile-image-mobile" src="avatar.svg" class="w-24 h-24 rounded-full object-cover border-2 border-[#00A2FF] cursor-pointer" alt="Foto de perfil" onclick="openPhotoOptionsModal()">
         <input type="file" id="edit-profile-image-input" accept="image/*" class="hidden" onchange="handleEditProfileImageUpload(event)">
       </div>
       <!-- Información básica -->
@@ -7193,7 +7086,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         <div class="flex flex-col items-center">
           <div class="relative mb-6">
-            <img id="edit-profile-image-desktop" src="https://via.placeholder.com/200" class="w-48 h-48 rounded-full object-cover border-4 border-white shadow-lg cursor-pointer" alt="Profile picture" onclick="openPhotoOptionsModal()">
+            <img id="edit-profile-image-desktop" src="avatar.svg" class="w-48 h-48 rounded-full object-cover border-4 border-white shadow-lg cursor-pointer" alt="Profile picture" onclick="openPhotoOptionsModal()">
             <input type="file" id="edit-profile-image-input-desktop" accept="image/*" class="hidden" onchange="handleEditProfileImageUpload(event)">
           </div>
 
@@ -7357,7 +7250,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   <div class="p-4">
     <div class="flex flex-col items-center text-center mb-4">
-      <img id="author-profile-image" src="https://via.placeholder.com/150" class="w-24 h-24 rounded-full object-cover border-2 border-gray-200">
+      <img id="author-profile-image" src="avatar.svg" class="w-24 h-24 rounded-full object-cover border-2 border-gray-200">
       <h2 id="author-profile-name" class="font-semibold text-base text-gray-900 mt-3"></h2>
       <p id="author-profile-handle" class="text-sm text-gray-600 mt-0.5">@usuario</p>
     </div>
@@ -7808,7 +7701,7 @@ function previewEditCover(event) {
     <!-- Sección principal: portada + título/autor -->
     <div class="flex items-start space-x-6 mb-8">
       <!-- Portada estilo Inkitt/Wattpad -->
-      <img id="detail-cover" src="/api/placeholder/400/600" alt="Portada de la historia"
+      <img id="detail-cover" src="cover.svg" alt="Portada de la historia"
            class="w-40 sm:w-48 md:w-56 aspect-[2/3] object-cover rounded-2xl border-2 border-[#00A2FF] shadow-lg">
 
       <!-- Detalles de historia -->
@@ -7821,6 +7714,12 @@ function previewEditCover(event) {
            onclick="openAuthorProfile(this.dataset.userid)">
           Nombre del autor
         </p>
+        <button id="library-toggle-btn" onclick="toggleLibrary()" class="mt-1 inline-flex items-center gap-2 bg-[#00A2FF] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#0066CC] transition-colors w-fit">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+          </svg>
+          <span id="library-toggle-text">Guardar en biblioteca</span>
+        </button>
       </div>
     </div>
 
@@ -8068,7 +7967,7 @@ function removeCurrentPhoto() {
   const profileImg = document.getElementById('profile-image');
   const profileImgDesktop = document.getElementById('profile-image-desktop');
 
-  const defaultImg = 'https://via.placeholder.com/150';
+  const defaultImg = 'avatar.svg';
 
   if (mobileImg) mobileImg.src = defaultImg;
   if (desktopImg) desktopImg.src = defaultImg;
@@ -9435,7 +9334,7 @@ function openMenuModal() {
         const menuImg = document.getElementById('menu-profile-image');
         const menuUsername = document.getElementById('menu-profile-username');
         const closeUsername = document.getElementById('close-account-username');
-        if (menuImg) menuImg.src = userData.profileImage || 'https://via.placeholder.com/150';
+        if (menuImg) menuImg.src = userData.profileImage || 'avatar.svg';
         if (menuUsername) menuUsername.textContent = '@' + (userData.username || 'usuario');
         if (closeUsername) closeUsername.textContent = '@' + (userData.username || 'usuario');
       }
@@ -9584,7 +9483,7 @@ function openMenuProfileEditor(field) {
       title.textContent = 'Actualizar foto';
       document.getElementById('menu-profile-editor-photo').classList.remove('hidden');
       const preview = document.getElementById('menu-profile-photo-preview');
-      if (preview) preview.src = data.profileImage || 'https://via.placeholder.com/140';
+      if (preview) preview.src = data.profileImage || 'avatar.svg';
       menuProfilePendingFile = null;
       const fileInput = document.getElementById('menu-edit-photo-input');
       if (fileInput) fileInput.value = '';
@@ -10304,11 +10203,11 @@ function showLiveNotification(message, type = 'info') {
         card.className = 'text-left bg-white border border-uber-line rounded-2xl overflow-hidden shadow-uber-chip';
         card.onclick = () => openStoryDetail(story);
         card.innerHTML = `
-          <img src="${story.coverImage || 'https://via.placeholder.com/300x400?text=Historia'}" alt="${story.title || 'Historia'}" class="w-full h-36 object-cover">
+          <img src="${story.coverImage || 'cover.svg'}" alt="${story.title || 'Historia'}" class="w-full h-36 object-cover">
           <div class="p-3">
             <p class="text-sm font-semibold text-uber-black line-clamp-2">${story.title || 'Historia sin título'}</p>
             <p class="text-xs text-uber-muted mt-1 truncate">${story.username || story.authorName || 'Autor desconocido'}</p>
-            <p class="text-[11px] text-uber-muted mt-2">🔥 ${story.score || 0} puntos</p>
+            <p class="text-[11px] text-uber-muted mt-2">${story.score || 0} puntos</p>
           </div>
         `;
         storiesContainer.appendChild(card);
@@ -10346,7 +10245,7 @@ function showLiveNotification(message, type = 'info') {
         row.innerHTML = `
           <div class="flex items-center gap-3 min-w-0">
             <span class="text-xs font-bold text-uber-muted w-5">#${index + 1}</span>
-            <img src="${author.image || 'https://via.placeholder.com/80'}" class="w-10 h-10 rounded-full object-cover" alt="${author.name}">
+            <img src="${author.image || 'avatar.svg'}" class="w-10 h-10 rounded-full object-cover" alt="${author.name}">
             <div class="min-w-0">
               <p class="text-sm font-semibold text-uber-black truncate">${author.name}</p>
               <p class="text-xs text-uber-muted">${author.stories} historias</p>
@@ -10377,7 +10276,7 @@ async function loadPhotos() {
       <img src="${photo.imageUrl || ''}" alt="" class="w-full h-auto">
       <div class="p-4">
         <div class="flex items-center mb-4">
-          <img src="${photo.authorImage || 'https://via.placeholder.com/150'}" alt="${photo.authorName || 'Usuario'}" class="w-8 h-8 rounded-full mr-2">
+          <img src="${photo.authorImage || 'avatar.svg'}" alt="${photo.authorName || 'Usuario'}" class="w-8 h-8 rounded-full mr-2">
           <span class="font-bold">${photo.authorName || 'Usuario'}</span>
         </div>
         ${photo.content ? `<p class="text-gray-700">${photo.content}</p>` : ''}
@@ -10408,14 +10307,6 @@ async function loadPhotos() {
       <div class="gift-item bg-black/20 backdrop-blur-sm rounded-lg" onclick="sendGift('diamante')">
         <img src="https://i.pinimg.com/originals/79/a5/49/79a54992591652b1595c6c61c49170fb.gif" alt="Diamante">
         <span class="text-[#00D6C9]">Diamante</span>
-      </div>
-      <div class="gift-item bg-black/20 backdrop-blur-sm rounded-lg" onclick="sendGift('oso_beaboo')">
-        <img src="https://www.icegif.com/wp-content/uploads/2021/11/icegif-346.gif" alt="oso Relumia">
-        <span class="text-[#00D6C9]">oso Relumia</span>
-      </div>
-      <div class="gift-item bg-black/20 backdrop-blur-sm rounded-lg" onclick="sendGift('oso_saltarin')">
-        <img src="https://www.icegif.com/wp-content/uploads/2021/11/icegif-347.gif" alt="oso saltarín">
-        <span class="text-[#00D6C9]">oso saltarín</span>
       </div>
       <div class="gift-item bg-black/20 backdrop-blur-sm rounded-lg" onclick="sendGift('besboos_carinosos')">
         <img src="https://i.pinimg.com/originals/3b/d4/d9/3bd4d9778b5e0a11ab141cb7b545ab10.gif" alt="Besboos cariñosos">
@@ -10882,7 +10773,7 @@ async function loadPhotos() {
                 <p class="text-sm text-gray-600">Comprado: ${new Date(frameData.purchaseDate).toLocaleDateString()}</p>
               </div>
               <div class="flex items-center space-x-2">
-                <span class="text-yellow-600 font-bold">🪙 ${frameData.cost}</span>
+                <span class="text-yellow-600 font-bold">${frameData.cost}</span>
                 <button onclick="applyFrame('${frameName}', 0); this.closest('.fixed').remove();" class="bg-[#00A2FF] text-white px-3 py-1 rounded text-sm">
                   Usar
                 </button>
@@ -11121,7 +11012,7 @@ async function loadPhotos() {
 
     card.innerHTML = `
       <div class="aspect-[3/4] relative">
-        <img src="${story.coverImage || '/api/placeholder/300/400'}"
+        <img src="${story.coverImage || 'cover.svg'}"
              alt="${story.title}"
              class="w-full h-full object-cover rounded-t-xl">
         <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-full text-xs">
@@ -11241,6 +11132,7 @@ function openCreatorHub() {
     document.getElementById('profile-view').classList.add('hidden');
     document.getElementById('community-view').classList.add('hidden');
     document.getElementById('relumia-chat-view').classList.add('hidden');
+    document.getElementById('library-view').classList.add('hidden');
 
     // Mostrar creator hub
     document.getElementById('creator-hub-view').classList.remove('hidden');
@@ -11357,6 +11249,7 @@ function openCreatorHub() {
     document.getElementById('profile-view').classList.add('hidden');
     document.getElementById('creator-hub-view').classList.add('hidden');
     document.getElementById('relumia-chat-view').classList.add('hidden');
+    document.getElementById('library-view').classList.add('hidden');
 
     // Mostrar community
     document.getElementById('community-view').classList.remove('hidden');
@@ -11520,7 +11413,7 @@ function openCreatorHub() {
         content,
         authorId: user.uid,
         authorName: userData.username || userData.name || 'Usuario',
-        authorImage: userData.profileImage || 'https://via.placeholder.com/150',
+        authorImage: userData.profileImage || 'avatar.svg',
         timestamp: Date.now(),
         likes: 0,
         likedBy: {},
@@ -11590,7 +11483,7 @@ function openCreatorHub() {
         noteElement.className = 'bg-white p-4 rounded-xl shadow';
         noteElement.innerHTML = `
           <div class="flex items-center mb-3">
-            <img src="${note.authorImage || 'https://via.placeholder.com/150'}" alt="${note.authorName || 'Usuario'}" class="w-10 h-10 rounded-full mr-3">
+            <img src="${note.authorImage || 'avatar.svg'}" alt="${note.authorName || 'Usuario'}" class="w-10 h-10 rounded-full mr-3">
             <div>
               <h3 class="font-bold">${note.authorName || 'Usuario'}</h3>
               <p class="text-sm text-gray-500">${note.timestamp ? new Date(note.timestamp).toLocaleString() : 'Ahora'}</p>
@@ -12002,6 +11895,7 @@ async function likeNote(noteId) {
     document.getElementById('profile-view').classList.add('hidden');
     document.getElementById('creator-hub-view').classList.add('hidden');
     document.getElementById('relumia-chat-view').classList.add('hidden');
+    document.getElementById('library-view').classList.add('hidden');
 
     // Mostrar main-app
     const mainApp = document.getElementById('main-app');
@@ -12024,6 +11918,7 @@ async function likeNote(noteId) {
     document.getElementById('profile-view').classList.add('hidden');
     document.getElementById('creator-hub-view').classList.add('hidden');
     document.getElementById('relumia-chat-view').classList.add('hidden');
+    document.getElementById('library-view').classList.add('hidden');
 
     // Mostrar search
     document.getElementById('search-view').classList.remove('hidden');
@@ -12045,6 +11940,7 @@ async function likeNote(noteId) {
     document.getElementById('community-view').classList.add('hidden');
     document.getElementById('creator-hub-view').classList.add('hidden');
     document.getElementById('relumia-chat-view').classList.add('hidden');
+    document.getElementById('library-view').classList.add('hidden');
 
     // Mostrar profile
     document.getElementById('profile-view').classList.remove('hidden');
@@ -12890,20 +12786,8 @@ async function likeNote(noteId) {
     modal.classList.remove('hidden');
     modal.style.display = 'flex';
 
-    // Renderizar reCAPTCHA si está disponible
-    if (window.grecaptcha && !window.captchaRendered) {
-      try {
-        grecaptcha.render('captcha-container', {
-          sitekey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
-          callback: 'onCaptchaSuccess'
-        });
-        window.captchaRendered = true;
-      } catch (e) {
-        console.warn('Error al renderizar reCAPTCHA:', e);
-        // Si reCAPTCHA falla, mostrar CAPTCHA alternativo simple
-        showSimpleCaptcha();
-      }
-    }
+    // Verificación con cálculo matemático (sin clave de demostración)
+    showSimpleCaptcha();
   }
 
   function showSimpleCaptcha() {
@@ -12942,12 +12826,6 @@ async function likeNote(noteId) {
         if (btn) btn.disabled = this.value.trim() === '';
       });
     }
-  }
-
-  function onCaptchaSuccess(token) {
-    // Callback de reCAPTCHA - habilitar botón
-    document.getElementById('captcha-submit-btn').disabled = false;
-    window.captchaToken = token;
   }
 
   function verifyCaptchaAndContinue() {
@@ -13294,7 +13172,7 @@ async function likeNote(noteId) {
     const bioElement = document.getElementById('profile-bio');
     if (bioElement) bioElement.textContent = data.bio || '';
 
-    const userProfileImage = data.profileImage || 'https://via.placeholder.com/150';
+    const userProfileImage = data.profileImage || 'avatar.svg';
     const profileImage = document.getElementById('profile-image');
     const profileImageDesktop = document.getElementById('profile-image-desktop');
     if (profileImage) profileImage.src = userProfileImage;
@@ -13525,6 +13403,8 @@ async function likeNote(noteId) {
     console.log('Abriendo historia:', story); // Debug
 
     window.currentStoryId = story.id;
+    window.currentLibraryStory = story;
+    updateLibraryButton(story.id);
     listenForStoryBlock(story.id);
 
     if (user) {
@@ -13538,7 +13418,7 @@ async function likeNote(noteId) {
     }
 
     // Actualizar contenido del modal
-    document.getElementById('detail-cover').src = story.coverImage || '/api/placeholder/800/400';
+    document.getElementById('detail-cover').src = story.coverImage || 'cover.svg';
     document.getElementById('detail-title').textContent = story.title;
     let authorDisplay = (story.username || "Autor Desconocido") + getVerificationIcon(story.email || "");
     document.getElementById('detail-author').innerHTML = "Por " + authorDisplay;
@@ -14033,7 +13913,7 @@ async function likeNote(noteId) {
       card.className = 'flex-shrink-0 w-48 cursor-pointer';
       card.innerHTML = `
           <div class="rounded-2xl overflow-hidden shadow-md">
-            <img src="${book.coverImage || '/api/placeholder/200/300'}" alt="${book.title}" class="w-full h-56 object-cover">
+            <img src="${book.coverImage || 'cover.svg'}" alt="${book.title}" class="w-full h-56 object-cover">
           </div>
           <p class="mt-2 text-sm font-semibold">${book.title}</p>
         `;
@@ -14058,7 +13938,7 @@ async function likeNote(noteId) {
       let verifiedIcon = getVerificationIcon(author.email || "");
       const authorId = author.userId || author.uid;
       item.innerHTML = `
-          <img src="${author.profileImage || 'https://via.placeholder.com/50'}" alt="${author.username}" class="w-12 h-12 rounded-full object-cover">
+          <img src="${author.profileImage || 'avatar.svg'}" alt="${author.username}" class="w-12 h-12 rounded-full object-cover">
           <span class="font-semibold">${author.username}${verifiedIcon}</span>
         `;
       item.addEventListener('click', () => {
@@ -14174,7 +14054,7 @@ async function likeNote(noteId) {
       if (editInstagram) editInstagram.value = data.instagram || "";
       if (editTiktok) editTiktok.value = data.tiktokUsername || "";
       if (editGender) editGender.value = data.gender || "";
-      if (editProfileImageMobile) editProfileImageMobile.src = data.profileImage || "https://via.placeholder.com/150";
+      if (editProfileImageMobile) editProfileImageMobile.src = data.profileImage || "avatar.svg";
 
       // Campos desktop
       const usernameDesktop = document.getElementById('edit-username-desktop');
@@ -14200,7 +14080,7 @@ async function likeNote(noteId) {
       if (cityDesktop) cityDesktop.value = data.city || "";
       if (websiteDesktop) websiteDesktop.value = data.website || "";
       if (bioDesktop) bioDesktop.value = data.bio || "";
-      if (profileImageDesktop) profileImageDesktop.src = data.profileImage || "https://via.placeholder.com/200";
+      if (profileImageDesktop) profileImageDesktop.src = data.profileImage || "avatar.svg";
       if (followersDesktop) followersDesktop.textContent = formatNumber(data.followersCount || 0);
       if (followingDesktop) followingDesktop.textContent = formatNumber(data.followingCount || 0);
 
@@ -14535,7 +14415,7 @@ async function likeNote(noteId) {
       document.getElementById('author-profile-name').innerHTML = authorNameHTML;
       const authorHandle = document.getElementById('author-profile-handle');
       if (authorHandle) authorHandle.textContent = '@' + (authorData.username || 'usuario');
-      document.getElementById('author-profile-image').src = authorData.profileImage || 'https://via.placeholder.com/150';
+      document.getElementById('author-profile-image').src = authorData.profileImage || 'avatar.svg';
       document.getElementById('author-followers').textContent = formatNumber(authorData.followersCount || 0);
       const authorFollowingEl = document.getElementById('author-following');
       if (authorFollowingEl) authorFollowingEl.textContent = formatNumber(authorData.followingCount || 0);
@@ -14839,7 +14719,7 @@ async function likeNote(noteId) {
 
           followerDiv.innerHTML = `
             <div class="flex items-center space-x-3">
-              <img src="${userData.profileImage || 'https://via.placeholder.com/50'}"
+              <img src="${userData.profileImage || 'avatar.svg'}"
                    alt="${userData.username}"
                    class="w-12 h-12 rounded-full object-cover border-2 border-[#00A2FF]"
                    onclick="closeFollowersModal(); viewAuthorProfile('${followerUserId}');">
@@ -14881,7 +14761,7 @@ async function likeNote(noteId) {
 
           followingDiv.innerHTML = `
             <div class="flex items-center space-x-3">
-              <img src="${userData.profileImage || 'https://via.placeholder.com/50'}"
+              <img src="${userData.profileImage || 'avatar.svg'}"
                    alt="${userData.username}"
                    class="w-12 h-12 rounded-full object-cover border-2 border-[#00A2FF]"
                    onclick="closeFollowingModal(); viewAuthorProfile('${followingUserId}');">
@@ -15018,7 +14898,7 @@ async function likeNote(noteId) {
 
         storyCard.innerHTML = `
           <div class="relative aspect-[3/4] rounded-lg overflow-hidden">
-            <img src="${story.coverImage || 'https://via.placeholder.com/300x400'}" class="w-full h-full object-cover" alt="${story.title}">
+            <img src="${story.coverImage || 'cover.svg'}" class="w-full h-full object-cover" alt="${story.title}">
             <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
               <h3 class="text-white text-sm font-semibold line-clamp-2">${story.title}</h3>
             </div>
@@ -15519,7 +15399,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
       storyCard.innerHTML = `
           <div class="rounded-2xl overflow-hidden shadow-md transform transition-transform hover:scale-105">
             <div class="story-cover-container">
-              <img src="${story.coverImage || '/api/placeholder/200/300'}" alt="${story.title}" class="story-cover-image">
+              <img src="${story.coverImage || 'cover.svg'}" alt="${story.title}" class="story-cover-image">
             </div>
           </div>
           <div class="mt-2">
@@ -15550,7 +15430,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
           card.onclick = () => openStoryEdit(story);
           card.innerHTML = `
               <div class="rounded-2xl overflow-hidden shadow-md transform transition-transform hover:scale-105">
-                <img src="${story.coverImage || '/api/placeholder/200/300'}" alt="${story.title}" class="w-full h-40 object-cover">
+                <img src="${story.coverImage || 'cover.svg'}" alt="${story.title}" class="w-full h-40 object-cover">
               </div>
               <div class="mt-2">
                 <h3 class="font-semibold text-sm">${story.title}</h3>
@@ -15644,7 +15524,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
       card.onclick = () => openStoryDetail(story);
       card.innerHTML = `
         <div class="top-story-poster rounded-2xl overflow-hidden shadow-md transform transition-transform hover:scale-105">
-          <img src="${story.coverImage || '/api/placeholder/240/360'}" alt="${story.title}" class="top-story-image">
+          <img src="${story.coverImage || 'cover.svg'}" alt="${story.title}" class="top-story-image">
         </div>
         <div class="mt-2">
           <h3 class="font-semibold text-sm truncate">${story.title}</h3>
@@ -15705,7 +15585,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
     card.onclick = () => openStoryDetail(story);
     card.innerHTML = `
       <div class="rounded-2xl overflow-hidden shadow-md">
-        <img src="${story.coverImage || '/api/placeholder/200/300'}" alt="${story.title}" class="w-full h-40 object-cover">
+        <img src="${story.coverImage || 'cover.svg'}" alt="${story.title}" class="w-full h-40 object-cover">
       </div>
       <div class="mt-2">
         <h3 class="font-semibold text-sm truncate">${story.title}</h3>
@@ -15791,7 +15671,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
       card.innerHTML = `
         <div class="rounded-2xl overflow-hidden shadow-md">
           <div class="story-cover-container">
-            <img src="${story.coverImage || '/api/placeholder/200/300'}" alt="${story.title}" class="story-cover-image">
+            <img src="${story.coverImage || 'cover.svg'}" alt="${story.title}" class="story-cover-image">
           </div>
         </div>
         <div class="mt-2">
@@ -15847,7 +15727,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
           <div class="relative">
             <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-[#00A2FF] cursor-pointer hover:scale-105 transition-transform"
                  onclick="openAuthorProfile('${author.uid}')">
-              <img src="${userData?.profileImage || 'https://via.placeholder.com/150'}"
+              <img src="${userData?.profileImage || 'avatar.svg'}"
                    alt="${userData?.username || author.username}"
                    class="w-full h-full object-cover">
             </div>
@@ -15950,7 +15830,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
         card.onclick = () => openStoryDetail(story);
         card.innerHTML = `
             <div class="rounded-2xl overflow-hidden shadow-md transform transition-transform hover:scale-105">
-              <img src="${story.coverImage || '/api/placeholder/200/300'}" alt="${story.title}" class="w-full h-40 object-cover">
+              <img src="${story.coverImage || 'cover.svg'}" alt="${story.title}" class="w-full h-40 object-cover">
             </div>
             <div class="mt-2">
               <h3 class="font-semibold text-sm">${story.title}</h3>
@@ -16076,10 +15956,6 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
       giftUrl = "https://i.pinimg.com/originals/6a/9a/74/6a9a7425e736575ee78816254227d1a8.gif";
     } else if (gift.giftType === "diamante") {
       giftUrl = "https://i.pinimg.com/originals/79/a5/49/79a54992591652b1595c6c61c49170fb.gif";
-    } else if (gift.giftType === "oso_beaboo") {
-      giftUrl = "https://www.icegif.com/wp-content/uploads/2021/11/icegif-346.gif";
-    } else if (gift.giftType === "oso_saltarin") {
-      giftUrl = "https://www.icegif.com/wp-content/uploads/2021/11/icegif-347.gif";
     } else if (gift.giftType === "besboos_carinosos") {
       giftUrl = "https://i.pinimg.com/originals/3b/d4/d9/3bd4d9778b5e0a11ab141cb7b545ab10.gif";
     } else if (gift.giftType === "besboos_leyendo") {
@@ -16766,7 +16642,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
       card.innerHTML = `
         <div class="rounded-2xl overflow-hidden shadow-md">
           <div class="story-cover-container">
-            <img src="${story.coverImage || '/api/placeholder/200/300'}" alt="${story.title}" class="story-cover-image">
+            <img src="${story.coverImage || 'cover.svg'}" alt="${story.title}" class="story-cover-image">
           </div>
         </div>
         <div class="mt-2">
@@ -16822,7 +16698,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
           <div class="relative">
             <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-[#00A2FF] cursor-pointer hover:scale-105 transition-transform"
                  onclick="openAuthorProfile('${author.uid}')">
-              <img src="${userData?.profileImage || 'https://via.placeholder.com/150'}"
+              <img src="${userData?.profileImage || 'avatar.svg'}"
                    alt="${userData?.username || author.username}"
                    class="w-full h-full object-cover">
             </div>
@@ -16943,7 +16819,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
           conversationDiv.innerHTML = `
             <div class="flex items-center space-x-3">
               <div class="relative">
-                <img src="${userData.profileImage || 'https://via.placeholder.com/50'}"
+                <img src="${userData.profileImage || 'avatar.svg'}"
                      alt="${userData.username}" class="w-14 h-14 rounded-full object-cover">
                 ${isOnline ? '<div class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>' : ''}
                 ${hasUnread ? '<div class="absolute -top-1 -left-1 w-5 h-5 bg-[#00A2FF] rounded-full flex items-center justify-center"><span class="text-xs text-white font-bold">' + (conversation.unreadCount > 9 ? '9+' : conversation.unreadCount) + '</span></div>' : ''}
@@ -17021,7 +16897,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
     // Cargar información del usuario
     firebase.database().ref('users/' + userId).once('value', snapshot => {
       const userData = snapshot.val();
-      document.getElementById('chat-user-avatar').src = userData.profileImage || 'https://via.placeholder.com/50';
+      document.getElementById('chat-user-avatar').src = userData.profileImage || 'avatar.svg';
       document.getElementById('chat-user-name').textContent = userData.username || 'Usuario';
 
       // Simular estado en línea (implementar lógica real)
@@ -17473,7 +17349,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
           authorDiv.onclick = () => selectAuthor(child.key, userData);
 
           authorDiv.innerHTML = `
-            <img src="${userData.profileImage || 'https://via.placeholder.com/40'}"
+            <img src="${userData.profileImage || 'avatar.svg'}"
                  alt="${userData.username}" class="w-10 h-10 rounded-full object-cover">
             <div>
               <h4 class="font-semibold">${userData.username}</h4>
@@ -17637,7 +17513,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
         firebase.database().ref('messages/' + conversationId).push(messageData);
 
         const conversationUpdate = {
-          lastMessage: `📎 ${file.name}`,
+          lastMessage: `${file.name}`,
           lastMessageTime: Date.now()
         };
 
@@ -17991,7 +17867,7 @@ function openCalendar() {
         div.className = 'bg-gray-100 p-4 rounded-lg';
         div.innerHTML = `
           <div class="flex items-center space-x-4">
-            <img src="${story.coverImage || '/api/placeholder/100/150'}" alt="${story.title}" class="w-20 h-30 object-cover rounded">
+            <img src="${story.coverImage || 'cover.svg'}" alt="${story.title}" class="w-20 h-30 object-cover rounded">
             <div class="flex-1">
               <div class="flex items-center">
                 <h3 class="font-bold">${story.title}</h3>
@@ -18215,7 +18091,7 @@ function updateStoriesTable(story) {
   row.innerHTML = `
     <td class="p-4">
       <div class="flex items-center space-x-3">
-        <img src="${story.coverImage || '/api/placeholder/50/75'}" class="w-12 h-16 object-cover rounded" alt="${story.title}">
+        <img src="${story.coverImage || 'cover.svg'}" class="w-12 h-16 object-cover rounded" alt="${story.title}">
         <div>
           <h4 class="font-bold">${story.title}</h4>
           <p class="text-sm text-gray-600">${new Date(story.createdAt).toLocaleDateString()}</p>
@@ -18690,6 +18566,103 @@ firebase.auth().onAuthStateChanged(user => {
       alert('No se pudo reproducir el mensaje de voz.');
     });
   }
+</script>
+<script>
+// ===== Biblioteca estilo Wattpad =====
+function getLibraryRef(storyId) {
+  const user = firebase.auth().currentUser;
+  if (!user) return null;
+  const base = firebase.database().ref('users/' + user.uid + '/library');
+  return storyId ? base.child(storyId) : base;
+}
+
+function toggleLibrary() {
+  const user = firebase.auth().currentUser;
+  const story = window.currentLibraryStory;
+  if (!user) { alert('Inicia sesión para guardar historias en tu biblioteca.'); return; }
+  if (!story || !story.id) return;
+  const ref = getLibraryRef(story.id);
+  ref.once('value').then(snap => {
+    if (snap.exists()) {
+      return ref.remove().then(() => updateLibraryButton(story.id));
+    }
+    return ref.set({
+      storyId: story.id,
+      title: story.title || 'Sin título',
+      coverImage: story.coverImage || 'cover.svg',
+      author: story.username || 'Autor desconocido',
+      savedAt: Date.now()
+    }).then(() => updateLibraryButton(story.id));
+  }).catch(e => console.error('Error en biblioteca:', e));
+}
+
+function updateLibraryButton(storyId) {
+  const txt = document.getElementById('library-toggle-text');
+  if (!txt) return;
+  const user = firebase.auth().currentUser;
+  if (!user || !storyId) { txt.textContent = 'Guardar en biblioteca'; return; }
+  getLibraryRef(storyId).once('value').then(snap => {
+    txt.textContent = snap.exists() ? 'Guardada en biblioteca' : 'Guardar en biblioteca';
+  }).catch(() => { txt.textContent = 'Guardar en biblioteca'; });
+}
+
+function openLibrary() {
+  const mainApp = document.getElementById('main-app');
+  if (mainApp) mainApp.classList.add('hidden');
+  document.getElementById('search-view').classList.add('hidden');
+  document.getElementById('community-view').classList.add('hidden');
+  document.getElementById('profile-view').classList.add('hidden');
+  document.getElementById('creator-hub-view').classList.add('hidden');
+  document.getElementById('relumia-chat-view').classList.add('hidden');
+  document.getElementById('library-view').classList.remove('hidden');
+  const topNav = document.getElementById('top-navbar');
+  if (topNav) topNav.style.display = 'none';
+  setBottomNavVisibility(true);
+  loadLibrary();
+}
+
+function loadLibrary() {
+  const list = document.getElementById('library-list');
+  const empty = document.getElementById('library-empty');
+  if (!list || !empty) return;
+  const user = firebase.auth().currentUser;
+  const esc = (typeof escapeHtml === 'function') ? escapeHtml : function(s) { return String(s == null ? '' : s); };
+  if (!user) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+    empty.querySelector('p').textContent = 'Inicia sesión para ver tu biblioteca.';
+    return;
+  }
+  getLibraryRef().once('value').then(snap => {
+    const items = snap.val() || {};
+    const arr = Object.values(items).sort((a, b) => (b.savedAt || 0) - (a.savedAt || 0));
+    list.innerHTML = '';
+    if (!arr.length) {
+      empty.classList.remove('hidden');
+      empty.querySelector('p').textContent = 'Tu biblioteca está vacía.';
+      return;
+    }
+    empty.classList.add('hidden');
+    arr.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'bg-white rounded-2xl border border-uber-line p-3 flex gap-3 items-center shadow-sm';
+      card.innerHTML = '<img src="' + esc(item.coverImage || 'cover.svg') + '" alt="' + esc(item.title || '') + '" class="w-14 h-20 object-cover rounded-lg">' +
+        '<div class="flex-1 min-w-0">' +
+          '<p class="font-bold truncate">' + esc(item.title || 'Sin título') + '</p>' +
+          '<p class="text-sm text-gray-500 truncate">' + esc(item.author || '') + '</p>' +
+          '<div class="flex gap-2 mt-2">' +
+            '<button class="bg-[#00A2FF] text-white text-sm px-3 py-1.5 rounded-lg font-medium" data-action="read">Leer</button>' +
+            '<button class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-medium" data-action="remove">Quitar</button>' +
+          '</div>' +
+        '</div>';
+      card.querySelector('[data-action="read"]').onclick = () => openStoryDetail({ id: item.storyId, title: item.title, coverImage: item.coverImage, username: item.author });
+      card.querySelector('[data-action="remove"]').onclick = () => {
+        getLibraryRef(item.storyId).remove().then(() => loadLibrary());
+      };
+      list.appendChild(card);
+    });
+  }).catch(e => console.error('Error cargando biblioteca:', e));
+}
 </script>
 </body>
 </html>

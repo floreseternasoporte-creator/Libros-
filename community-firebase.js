@@ -11,7 +11,7 @@ async function fetchUserProfile(user) {
 
   return {
     username: user.displayName || user.email?.split('@')[0] || 'Usuario',
-    profileImage: user.photoURL || 'https://via.placeholder.com/40'
+    profileImage: user.photoURL || 'avatar.svg'
   };
 }
 
@@ -121,7 +121,7 @@ async function publishNote() {
       authorId: user.uid,
       userId: user.uid,
       authorName: userData.username || userData.name || 'Usuario',
-      authorImage: userData.profileImage || 'https://via.placeholder.com/40',
+      authorImage: userData.profileImage || 'avatar.svg',
       imageUrl,
       likes: 0,
       likedBy: {},
@@ -227,7 +227,7 @@ async function loadNotes() {
       noteCard.className = 'p-4 hover:bg-gray-50 transition-colors';
       noteCard.innerHTML = `
         <div class="flex items-start space-x-3">
-          <img src="${note.authorImage || 'https://via.placeholder.com/40'}" class="w-10 h-10 rounded-full object-cover" alt="${note.authorName || 'Usuario'}">
+          <img src="${note.authorImage || 'avatar.svg'}" class="w-10 h-10 rounded-full object-cover" alt="${note.authorName || 'Usuario'}">
           <div class="flex-1">
             <div class="flex items-center space-x-2">
               <span class="font-semibold text-sm">${note.authorName || 'Usuario'}</span>
