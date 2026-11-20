@@ -11,18 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const storyUploadModal = document.getElementById('story-upload-modal');
 
     // Event Listeners
-    document.getElementById('add-story-btn').addEventListener('click', () => {
+    document.getElementById('add-story-btn')?.addEventListener('click', () => {
         storyUploadModal.classList.add('active');
     });
 
-    document.getElementById('story-upload-back').addEventListener('click', () => {
+    document.getElementById('story-upload-back')?.addEventListener('click', () => {
         storyUploadModal.classList.remove('active');
         resetUploadForm();
     });
 
-    document.getElementById('story-file').addEventListener('change', handleFileSelect);
-    document.getElementById('story-upload-form').addEventListener('submit', handleStoryUpload);
-    document.getElementById('story-viewer-close').addEventListener('click', closeStoryViewer);
+    document.getElementById('story-file')?.addEventListener('change', handleFileSelect);
+    document.getElementById('story-upload-form')?.addEventListener('submit', handleStoryUpload);
+    document.getElementById('story-viewer-close')?.addEventListener('click', closeStoryViewer);
 
     setTimeout(() => loadStories(), 500);
     setInterval(() => loadStories(), 30000);

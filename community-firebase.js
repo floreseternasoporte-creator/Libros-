@@ -105,6 +105,23 @@ async function publishNote() {
     return;
   }
 
+  // Límite de publicaciones (en Pages el endpoint no existe: continúa)
+  try {
+    const limitsRes = await fetch('/api/check-user-limits', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: user.uid, action: 'note' })
+    });
+    if (limitsRes.ok) {
+      const limits = await limitsRes.json();
+      if (limits && limits.canPerformAction === false) {
+        alert(limits.message || 'Has alcanzado el límite de publicaciones.');
+        setPublishButtonState(false);
+        return;
+      }
+    }
+  } catch (e) { /* sin backend de límites: publicar igual */ }
+
   setPublishButtonState(true);
 
   try {

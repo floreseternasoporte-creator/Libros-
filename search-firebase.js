@@ -8,13 +8,13 @@ let searchInputDebounceTimer = null;
 let latestSearchTicket = 0;
 
 function handleSearchInput() {
-  const query = document.getElementById('search-input').value.trim();
+  const query = (document.getElementById('search-input')?.value || '').trim();
   const clearBtn = document.getElementById('clear-search-btn');
 
   if (query.length > 0) {
-    clearBtn.classList.remove('hidden');
+    clearBtn?.classList.remove('hidden');
   } else {
-    clearBtn.classList.add('hidden');
+    clearBtn?.classList.add('hidden');
   }
 
   if (searchInputDebounceTimer) {
@@ -50,8 +50,9 @@ function handleSearchInput() {
 }
 
 function clearSearchInput() {
-  document.getElementById('search-input').value = '';
-  document.getElementById('clear-search-btn').classList.add('hidden');
+  const searchInputEl = document.getElementById('search-input');
+  if (searchInputEl) searchInputEl.value = '';
+  document.getElementById('clear-search-btn')?.classList.add('hidden');
   clearSearchResults();
   loadPopularStories();
 }
@@ -68,7 +69,7 @@ function renderSearchInfoList(items) {
   if (!infoList) return;
 
   if (!items || items.length === 0) {
-    infoList.innerHTML = '<div class="text-center text-gray-500 py-8">Escribe algo para que Baro te responda con información precisa.</div>';
+    infoList.innerHTML = '<div class="text-center text-gray-500 py-8">Escribe algo para buscar información.</div>';
     return;
   }
 
@@ -88,7 +89,7 @@ function renderSearchInfoList(items) {
   infoList.innerHTML = `
     <article class="${cardClasses}">
       <div class="relative flex items-start gap-3">
-        <img src="https://i.ibb.co/21fZ5Wkp/IMG-7701.png" alt="Baro" class="w-9 h-9 rounded-full flex-shrink-0">
+        <img src="avatar.svg" alt="Relumia" class="w-9 h-9 rounded-full flex-shrink-0">
         <div class="min-w-0 w-full">
           <p class="text-[11px] font-semibold tracking-wide uppercase text-gray-500 mb-2">${responseLabel}</p>
           ${showIdentityTags ? `
@@ -100,7 +101,7 @@ function renderSearchInfoList(items) {
           ` : ''}
           <p id="search-info-typed-text" class="text-sm text-[#111111] leading-relaxed"></p>
           <div class="mt-3 pt-3 border-t ${separatorClass} flex items-center gap-2">
-            <img src="https://i.ibb.co/21fZ5Wkp/IMG-7701.png" alt="Baro" class="w-4 h-4 rounded-full">
+            <img src="avatar.svg" alt="Relumia" class="w-4 h-4 rounded-full">
             <span class="text-[11px] ${footerTextClass}">Perfil de Relumia</span>
           </div>
         </div>
@@ -134,9 +135,9 @@ function renderSearchInfoLoading() {
   infoList.innerHTML = `
     <article class="bg-white border border-[#e6e6e6] rounded-2xl p-4 shadow-sm">
       <div class="flex items-center gap-3">
-        <img src="https://i.ibb.co/21fZ5Wkp/IMG-7701.png" alt="Baro" class="w-9 h-9 rounded-full flex-shrink-0">
+        <img src="avatar.svg" alt="Relumia" class="w-9 h-9 rounded-full flex-shrink-0">
         <div class="w-full">
-          <p class="text-[11px] font-semibold tracking-wide uppercase text-gray-500 mb-2">Baro está pensando</p>
+          <p class="text-[11px] font-semibold tracking-wide uppercase text-gray-500 mb-2">Buscando información…</p>
           <div class="flex items-center gap-1">
             <span class="w-2 h-2 rounded-full bg-gray-500/70 animate-bounce" style="animation-delay:0ms"></span>
             <span class="w-2 h-2 rounded-full bg-gray-500/70 animate-bounce" style="animation-delay:140ms"></span>
@@ -258,9 +259,9 @@ async function searchContent(query) {
         const storyCard = document.createElement('div');
         storyCard.className = 'cursor-pointer';
         storyCard.innerHTML = `
-          <img src="${story.coverImage || 'cover.svg'}" 
+          <img src="${escapeAttr(story.coverImage || 'cover.svg')}" 
                class="w-full aspect-[3/4] object-cover rounded-lg" 
-               alt="${story.title || 'Historia'}">
+               alt="${escapeAttr(story.title || 'Historia')}">
         `;
         storyCard.onclick = () => openStoryDetail(story);
         storiesContainer.appendChild(storyCard);
@@ -298,12 +299,12 @@ async function searchContent(query) {
         const authorCard = document.createElement('div');
         authorCard.className = 'flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer';
         authorCard.innerHTML = `
-          <img src="${user.profileImage || 'avatar.svg'}"
+          <img src="${escapeAttr(user.profileImage || 'avatar.svg')}"
                class="w-12 h-12 rounded-full object-cover"
-               alt="${user.username}">
+               alt="${escapeAttr(user.username)}">
           <div class="flex-1">
-            <p class="font-semibold text-sm">${user.username || 'Usuario'}</p>
-            <p class="text-xs text-gray-500">@${user.username || 'usuario'}</p>
+            <p class="font-semibold text-sm">${escapeHtml(user.username || 'Usuario')}</p>
+            <p class="text-xs text-gray-500">@${escapeHtml(user.username || 'usuario')}</p>
           </div>
           <button onclick="followUser('${user.userId}')" class="px-4 py-1.5 bg-[#00A2FF] text-white text-sm font-semibold rounded-full hover:bg-[#0066CC]">
             Seguir
@@ -341,9 +342,9 @@ async function loadPopularStories() {
         const storyCard = document.createElement('div');
         storyCard.className = 'cursor-pointer';
         storyCard.innerHTML = `
-          <img src="${story.coverImage || 'cover.svg'}" 
+          <img src="${escapeAttr(story.coverImage || 'cover.svg')}" 
                class="w-full aspect-[3/4] object-cover rounded-lg" 
-               alt="${story.title || 'Historia'}">
+               alt="${escapeAttr(story.title || 'Historia')}">
         `;
         storyCard.onclick = () => openStoryDetail(story);
         storiesContainer.appendChild(storyCard);
