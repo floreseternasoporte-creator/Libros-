@@ -1,12 +1,10 @@
-
-// js/stories.js - Historias con Firebase (auth en Firebase)
+// js/stories.js - Relatos de 24h con Firebase (auth en Firebase)
+// Sin backend: lee y escribe directo en Realtime Database (nodo `relatos`).
 
 document.addEventListener('DOMContentLoaded', () => {
     const auth = firebase.auth();
-    const storiesApi = '/api/get-stories';
-    const uploadStoryApi = '/api/upload-story';
-    const deleteStoryApi = '/api/delete-story';
-    const updateStoryApi = '/api/update-story';
+    const db = firebase.database();
+    const RELATOS_TTL_MS = 24 * 60 * 60 * 1000; // 24 horas
 
     const storiesContainer = document.getElementById('stories');
     const storyViewer = document.getElementById('story-viewer');
@@ -57,38 +55,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadStories() {
         const currentUser = auth.currentUser;
-        if (!currentUser) {
-            setTimeout(loadStories, 1000);
-            return;
-        }
+        // Sin sesión: salir en silencio, sin reintentar (el intervalo de 30 s
+        // vuelve a llamar, pero tampoco hace nada sin sesión).
+        if (!currentUser) return;
 
         try {
-            const response = await fetch(storiesApi);
-            if (!response.ok) {
-                throw new Error('No se pudieron cargar las historias');
-            }
-            const data = await response.json();
-            const stories = data.stories || [];
+            const snapshot = await db.ref('relatos').once('value');
+            const stories = Object.values(snapshot.val() || {}).filter(Boolean);
 
             storiesContainer.innerHTML = '';
 
             if (stories.length > 0) {
-                const twelveHoursAgo = Date.now() - (12 * 60 * 60 * 1000);
-                const recentStories = stories.filter(story => story.timestamp > twelveHoursAgo);
+                const cutoff = Date.now() - RELATOS_TTL_MS;
+                const recentStories = stories.filter(story => story.timestamp > cutoff);
 
-                // Eliminar historias viejas
-                const oldStories = stories.filter(story => story.timestamp <= twelveHoursAgo);
+                // Eliminar relatos viejos (más de 24 h) directo en Firebase
+                const oldStories = stories.filter(story => story.timestamp <= cutoff);
                 await Promise.all(
                     oldStories.map((story) =>
-                        fetch(deleteStoryApi, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ storyId: story.id })
-                        }).catch((err) => console.log('Error deleting old story:', err))
+                        db.ref('relatos/' + story.id).remove()
+                            .catch((err) => console.log('Error deleting old story:', err))
                     )
                 );
 
-                // Agrupar por usuario
+                // Agrupar por usuario (el más reciente primero)
+                recentStories.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
                 const storiesByUser = {};
                 recentStories.forEach(story => {
                     if (!storiesByUser[story.userId]) {
@@ -116,17 +107,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function createStoryElement(storyData, userId) {
         const storyDiv = document.createElement('div');
         storyDiv.className = 'flex flex-col items-center flex-shrink-0 cursor-pointer';
-        
+
         // Usar username, nunca email, y saltar si es anónimo
         let displayName = storyData.username || storyData.email?.split('@')[0] || '';
-        
+
         // No mostrar historias anónimas
         if (!displayName || displayName.toLowerCase() === 'anónimo' || displayName.toLowerCase() === 'anonimo') {
             return null;
         }
-        
+
         storyDiv.innerHTML = `
-            <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-pink-500 p-0.5">
+            <div class="w-16 h-16 rounded-full bg-black p-0.5">
                 <div class="w-full h-full rounded-full border-2 border-white overflow-hidden">
                     <img src="${storyData.coverImage || 'cover.svg'}" alt="${displayName}" class="w-full h-full object-cover">
                 </div>
@@ -167,22 +158,16 @@ document.addEventListener('DOMContentLoaded', () => {
         reader.onload = async () => {
             try {
                 const coverImageData = reader.result;
-                const response = await fetch(uploadStoryApi, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        userId: currentUser.uid,
-                        username: currentUser.displayName || currentUser.email.split('@')[0],
-                        email: currentUser.email,
-                        coverImageData,
-                        coverImageFileName: file.name,
-                        coverImageContentType: file.type || 'image/jpeg'
-                    })
+                const newRef = db.ref('relatos').push();
+                await newRef.set({
+                    id: newRef.key,
+                    userId: currentUser.uid,
+                    username: currentUser.displayName || currentUser.email.split('@')[0],
+                    email: currentUser.email,
+                    coverImage: coverImageData,
+                    timestamp: Date.now(),
+                    views: 0
                 });
-
-                if (!response.ok) {
-                    throw new Error('No se pudo publicar el relato');
-                }
 
                 progressBar.style.width = '100%';
                 progressText.textContent = '¡Relato publicado!';
@@ -196,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 500);
             } catch (error) {
                 console.error("Error al publicar relato:", error);
-                alert('Error al publicar la nota. Por favor intenta de nuevo.');
+                alert('Error al publicar el relato. Por favor intenta de nuevo.');
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Publicar Relato';
                 progressDiv.style.display = 'none';
@@ -213,43 +198,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function openStoryViewer(userId) {
         try {
-            const response = await fetch(`${storiesApi}?userId=${encodeURIComponent(userId)}`);
-            if (!response.ok) {
-                throw new Error('No se pudieron cargar las historias');
-            }
-            const data = await response.json();
-            const stories = data.stories || [];
-            
+            const snapshot = await db.ref('relatos').once('value');
+            const allStories = Object.values(snapshot.val() || {}).filter(Boolean);
+            // Filtrar por usuario en el cliente
+            const stories = allStories.filter(story => story.userId === userId);
+
             if (stories.length === 0) return;
 
-            const twelveHoursAgo = Date.now() - (12 * 60 * 60 * 1000);
-            const recentStories = stories.filter(story => story.timestamp > twelveHoursAgo);
-            
+            const cutoff = Date.now() - RELATOS_TTL_MS;
+            const recentStories = stories.filter(story => story.timestamp > cutoff);
+
             if (recentStories.length === 0) return;
 
             const storyContent = document.querySelector('.story-content');
             storyContent.innerHTML = '';
             recentStories.sort((a, b) => a.timestamp - b.timestamp);
-            
+
             let currentStoryIndex = 0;
             const currentUser = auth.currentUser;
 
             function showStory(index) {
                 const story = recentStories[index];
 
-                // Incrementar vistas
+                // Incrementar vistas (solo si el que mira no es el dueño)
                 if (currentUser && currentUser.uid !== userId) {
                     const nextViews = (story.views || 0) + 1;
                     story.views = nextViews;
-                    fetch(updateStoryApi, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ storyId: story.id, updates: { views: nextViews } })
-                    }).catch((error) => console.warn('No se pudo actualizar vistas:', error));
+                    db.ref('relatos/' + story.id + '/views').transaction(views => (views || 0) + 1)
+                        .catch((error) => console.warn('No se pudo actualizar vistas:', error));
                 }
 
                 const displayName = story.username || story.email?.split('@')[0] || 'Usuario';
-                
+
                 storyContent.innerHTML = `
                     <div class="story-header">
                         <div class="story-progress-container">
@@ -290,13 +270,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     optionsButton.addEventListener('click', (e) => {
                         e.stopPropagation();
                         const storyIdToDelete = e.currentTarget.dataset.storyId;
-                        
+
                         const menu = document.createElement('div');
                         menu.className = 'story-options-menu';
                         menu.innerHTML = `<button class="delete-option"><i class="fas fa-trash-alt"></i><span>Eliminar historia</span></button>`;
                         document.body.appendChild(menu);
                         setTimeout(() => menu.classList.add('active'), 10);
-                        
+
                         menu.querySelector('.delete-option').addEventListener('click', async (e) => {
                             e.stopPropagation();
                             menu.remove();
@@ -324,14 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function deleteStory(storyId) {
         try {
-            const response = await fetch(deleteStoryApi, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ storyId })
-            });
-            if (!response.ok) {
-                throw new Error('No se pudo eliminar la historia');
-            }
+            await db.ref('relatos/' + storyId).remove();
             closeStoryViewer();
             loadStories();
         } catch (error) {

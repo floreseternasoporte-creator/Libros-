@@ -177,6 +177,12 @@ async function publishNote() {
   }
 }
 
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 async function loadNotes() {
   const feedContainer = document.getElementById('notes-feed');
   if (!feedContainer) return;
@@ -227,21 +233,25 @@ async function loadNotes() {
       noteCard.className = 'p-4 hover:bg-gray-50 transition-colors';
       noteCard.innerHTML = `
         <div class="flex items-start space-x-3">
-          <img src="${note.authorImage || 'avatar.svg'}" class="w-10 h-10 rounded-full object-cover" alt="${note.authorName || 'Usuario'}">
+          <img src="${note.authorImage || 'avatar.svg'}" class="w-10 h-10 rounded-full object-cover" alt="${escapeHtml(note.authorName || 'Usuario')}">
           <div class="flex-1">
             <div class="flex items-center space-x-2">
-              <span class="font-semibold text-sm">${note.authorName || 'Usuario'}</span>
+              <span class="font-semibold text-sm">${escapeHtml(note.authorName || 'Usuario')}</span>
               <span class="text-xs text-gray-500">${timeAgo(note.timestamp || Date.now())}</span>
             </div>
-            <p class="text-sm mt-1">${note.content || ''}</p>
+            <p class="text-sm mt-1">${escapeHtml(note.content || '')}</p>
             ${note.imageUrl ? `<img src="${note.imageUrl}" class="mt-2 rounded-2xl max-h-96 w-full object-cover" alt="Imagen">` : ''}
             <div class="flex items-center space-x-4 mt-3 text-gray-500">
-              <button id="like-btn-${note.id}" onclick="likeNote('${note.id}')" class="flex items-center space-x-1 hover:text-red-500">
+              <button id="like-btn-${note.id}" onclick="likeNote('${escapeHtml(note.id)}')" class="flex items-center space-x-1 hover:text-red-500">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
                 <span id="like-count-${note.id}" class="text-sm">${note.likes || 0}</span>
               </button>
+              ${note.userId === firebase.auth().currentUser?.uid ?
+                `<button onclick="deleteNote('${escapeHtml(note.id)}')" class="text-xs text-red-500 hover:text-red-700">Eliminar</button>` :
+                `<button onclick="reportNote('${escapeHtml(note.id)}')" class="text-xs text-gray-500 hover:text-gray-700">Reportar</button>`
+              }
             </div>
           </div>
         </div>
@@ -327,16 +337,33 @@ function timeAgo(timestamp) {
 
 function handleNoteImagePreview(event) {
   const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const preview = document.getElementById('preview-img');
-      const previewWrap = document.getElementById('image-preview');
-      if (preview) preview.src = e.target.result;
-      if (previewWrap) previewWrap.classList.remove('hidden');
-    };
-    reader.readAsDataURL(file);
+  if (!file) return;
+
+  // Verificar que sea una imagen
+  if (!file.type.startsWith('image/')) {
+    alert('Por favor selecciona un archivo de imagen válido');
+    event.target.value = '';
+    return;
   }
+
+  // Verificar tamaño (máximo 5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    alert('La imagen es demasiado grande. Máximo 5MB.');
+    event.target.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const preview = document.getElementById('preview-img');
+    const previewWrap = document.getElementById('image-preview');
+    if (preview) preview.src = e.target.result;
+    if (previewWrap) previewWrap.classList.remove('hidden');
+  };
+  reader.onerror = function() {
+    alert('Error al cargar la imagen');
+  };
+  reader.readAsDataURL(file);
 }
 
 function removeImage() {

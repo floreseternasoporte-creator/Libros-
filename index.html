@@ -1482,7 +1482,7 @@ setInterval(checkScheduledChapters, 60000);
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 class="text-2xl font-bold text-green-600 mb-4">¡Verificación Exitosa!</h2>
+            <h2 class="text-2xl font-bold text-green-600 mb-4">¡Solicitud enviada!</h2>
             <p class="text-gray-600 mb-8">Tu solicitud ha sido enviada. Recibirás tu insignia en 3-5 días hábiles.</p>
           </div>
 
@@ -1520,7 +1520,7 @@ setInterval(checkScheduledChapters, 60000);
                 <li>• Funciones premium</li>
               </ul>
             </div>
-            <p class="text-gray-600 mb-8">Esta restricción se aplicará permanentemente a tu cuenta por motivos de seguridad.</p>
+            <p class="text-gray-600 mb-8">Podrás verificarte cuando cumplas 18 años.</p>
           </div>
 
           <button onclick="closeVerificationModal()" class="w-full bg-gray-500 text-white py-4 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
@@ -1616,7 +1616,7 @@ setInterval(checkScheduledChapters, 60000);
       <div class="max-w-md mx-auto space-y-6">
 
         <!-- Sección de contacto -->
-        <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+        <div id="support-form-container" class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
           <h3 class="text-xl font-bold text-gray-900 mb-6 text-center">Contáctanos</h3>
 
           <form id="support-form" class="space-y-4">
@@ -1658,6 +1658,7 @@ setInterval(checkScheduledChapters, 60000);
             </div>
 
             <button
+              id="btn-send-support"
               type="submit"
               class="w-full bg-[#00A2FF] text-white py-4 rounded-lg font-semibold hover:bg-[#0066CC] transition-all"
             >
@@ -2451,7 +2452,7 @@ setInterval(checkScheduledChapters, 60000);
     <div class="flex-1 px-6 pt-8">
       <!-- Tabs de Teléfono y Correo -->
       <div class="flex border-b border-gray-200 mb-6">
-        <button onclick="switchLoginTab('phone')" id="phone-tab" class="flex-1 pb-3 text-center font-medium text-gray-400 border-b-2 border-transparent">
+        <button onclick="switchLoginTab('phone')" id="phone-tab" class="hidden flex-1 pb-3 text-center font-medium text-gray-400 border-b-2 border-transparent">
           Teléfono
         </button>
         <button onclick="switchLoginTab('email')" id="email-tab" class="flex-1 pb-3 text-center font-medium text-gray-900 border-b-2 border-gray-900">
@@ -3356,9 +3357,8 @@ document.addEventListener('DOMContentLoaded', () => {
               <p class="text-[11px] uppercase tracking-wide text-gray-500 font-semibold">Relumia AI</p>
               <h3 class="text-sm font-semibold text-gray-900">Relumia AI Assistant</h3>
             </div>
-            <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              En línea
+            <span class="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600">
+              Asistente
             </span>
           </div>
           <div class="mt-3 flex flex-wrap gap-2">
@@ -4616,16 +4616,6 @@ function escapeHtml(text) {
   </div>
 
   <div class="p-4">
-    <div id="search-ai-card" class="hidden mb-4 bg-white border border-uber-line rounded-2xl p-4 shadow-uber-chip">
-      <div class="inline-flex items-center gap-2 text-[11px] font-semibold tracking-wide uppercase text-uber-muted mb-2">
-        <span class="w-2 h-2 rounded-full bg-uber-black"></span>
-        Generado por IA
-      </div>
-      <p id="search-ai-title" class="text-sm font-semibold text-uber-black mb-1"></p>
-      <p id="search-ai-summary" class="text-xs text-uber-muted leading-relaxed"></p>
-      <a id="search-ai-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-block mt-2 text-xs font-semibold text-uber-black hover:underline">Ver en Wikipedia</a>
-    </div>
-
     <div class="mb-4">
       <div id="active-search-filters" class="flex flex-wrap gap-2"></div>
     </div>
@@ -4755,65 +4745,6 @@ function switchSearchTab(tab) {
 </script>
 
 <script>
-  // Script para cambiar entre tabs
-  document.querySelectorAll('.tab-button').forEach(button => {
-    button.addEventListener('click', () => {
-      // Remover active de todos los botones
-      document.querySelectorAll('.tab-button').forEach(btn => {
-        btn.classList.remove('active');
-        btn.classList.add('text-gray-500');
-        btn.classList.remove('text-[#00A2FF]');
-      });
-
-      // Agregar active al botón clickeado
-      button.classList.add('active');
-      button.classList.remove('text-gray-500');
-      button.classList.add('text-[#00A2FF]');
-
-      // Mostrar la sección correspondiente
-      const tabName = button.getAttribute('data-tab');
-      if (tabName === 'books') {
-        document.getElementById('books-section').classList.remove('hidden');
-        document.getElementById('books-section').classList.add('block');
-        document.getElementById('authors-section').classList.add('hidden');
-        document.getElementById('authors-section').classList.remove('block');
-      } else {
-        document.getElementById('authors-section').classList.remove('hidden');
-        document.getElementById('authors-section').classList.add('block');
-        document.getElementById('books-section').classList.add('hidden');
-        document.getElementById('books-section').classList.remove('block');
-      }
-    });
-  });
-
-  // Simulación de apertura del micrófono
-  const voiceSearchBtn = document.getElementById('voice-search-btn');
-  if (voiceSearchBtn) {
-    voiceSearchBtn.addEventListener('click', () => {
-      document.getElementById('voice-animation-container').classList.remove('hidden');
-    });
-  }
-
-  const cancelVoiceBtn = document.getElementById('cancel-voice');
-  if (cancelVoiceBtn) {
-    cancelVoiceBtn.addEventListener('click', () => {
-      document.getElementById('voice-animation-container').classList.add('hidden');
-    });
-  }
-
-  // Lógica de seguir autores (simulación)
-  function toggleFollow(authorId) {
-    const followButton = document.getElementById('follow-' + authorId);
-    if (followButton.classList.contains('bg-[#00A2FF]')) {
-      followButton.classList.remove('bg-[#00A2FF]');
-      followButton.classList.add('bg-gray-200');
-      followButton.textContent = 'Seguir';
-    } else {
-      followButton.classList.remove('bg-gray-200');
-      followButton.classList.add('bg-[#00A2FF]');
-      followButton.textContent = 'Dejar de seguir';
-    }
-  }
 
 
 
@@ -5080,106 +5011,7 @@ window.fetchSearchInfoFromWikipedia = async function(query) {
 
   
 
-  async function getAISuggestions() {
-    const btn = document.getElementById('ai-suggest-btn');
-    const suggestionsDiv = document.getElementById('ai-suggestions');
-    const currentText = document.getElementById('note-content').value.trim();
 
-    btn.innerHTML = '<svg class="animate-spin h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Getting suggestions...';
-
-    let prompt = 'Generate creative writing prompts about books and storytelling:';
-
-    if (currentText.length > 0) {
-      prompt = `Continue this thought about writing or books: "${currentText}". Give me 4 different ways to expand on this idea:`;
-    }
-
-    try {
-      const response = await fetch('https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          inputs: prompt,
-          parameters: {
-            max_length: 150,
-            temperature: 0.8,
-            do_sample: true
-          }
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const aiText = data[0]?.generated_text || '';
-
-        let prompts;
-        if (currentText.length > 0) {
-          prompts = [
-            currentText + ' and it made me realize how powerful stories can be',
-            currentText + ' which is why I think every writer should explore this',
-            currentText + ' and this experience changed my perspective on reading',
-            currentText + ' so I want to share this insight with other book lovers'
-          ];
-        } else {
-          prompts = [
-            aiText.split(':')[1]?.trim() || 'What story changed your perspective?',
-            'Share your favorite plot twist from any book',
-            'Describe your ideal writing space in detail',
-            'What character would you love to meet in real life?'
-          ];
-        }
-
-        suggestionsDiv.innerHTML = prompts.map(suggestion =>
-          `<div class="p-2 bg-gray-50 rounded-lg text-sm cursor-pointer hover:bg-gray-100 transition" onclick="useSuggestion('${suggestion.replace(/'/g, "\\'")}')">${suggestion}</div>`
-        ).join('');
-      } else {
-        throw new Error('API failed');
-      }
-
-    } catch (error) {
-      let suggestions;
-
-      if (currentText.length > 0) {
-        suggestions = [
-          currentText + ' and it completely changed how I see storytelling',
-          currentText + ' which is why I recommend it to every book lover',
-          currentText + ' and this experience opened my mind to new possibilities',
-          currentText + ' so I had to share this amazing discovery'
-        ];
-      } else {
-        const randomPrompts = [
-          'What book made you cry and why?',
-          'Share your strangest writing inspiration',
-          'Which author would you invite to dinner?',
-          'Describe your writing process in one word',
-          'What fictional world feels most real to you?',
-          'Share a quote that changed your life',
-          'What story are you dying to tell?',
-          'Describe your perfect reading day',
-          'What character deserved a better ending?',
-          'Share your most unusual book recommendation',
-          'What writing advice do you wish you had sooner?',
-          'Describe a scene that gave you chills'
-        ];
-        suggestions = randomPrompts.sort(() => 0.5 - Math.random()).slice(0, 4);
-      }
-
-      suggestionsDiv.innerHTML = suggestions.map(suggestion =>
-        `<div class="p-2 bg-gray-50 rounded-lg text-sm cursor-pointer hover:bg-gray-100 transition" onclick="useSuggestion('${suggestion}')">${suggestion}</div>`
-      ).join('');
-    }
-
-    suggestionsDiv.classList.remove('hidden');
-    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>Get AI suggestions';
-  }
-
-  function useSuggestion(text) {
-    document.getElementById('note-content').value = text;
-    document.getElementById('ai-suggestions').classList.add('hidden');
-    const noteCounter = document.getElementById('note-char-counter');
-    if (noteCounter) noteCounter.textContent = `${text.length}/280`;
-  }
 
 
 
@@ -6311,23 +6143,6 @@ window.fetchSearchInfoFromWikipedia = async function(query) {
   }
 </style>
 
-<!-- Script para cambiar entre libros y autores -->
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var tabButtons = document.querySelectorAll('.tab-button');
-    tabButtons.forEach(function(button) {
-      button.addEventListener('click', function() {
-        var tab = button.getAttribute('data-tab');
-        document.getElementById('books-section').classList.toggle('hidden', tab !== 'books');
-        document.getElementById('authors-section').classList.toggle('hidden', tab !== 'authors');
-        tabButtons.forEach(function(btn) {
-          btn.classList.remove('text-white', 'border-b-2', 'border-[#ff0050]');
-        });
-        button.classList.add('text-white', 'border-b-2', 'border-[#ff0050]');
-      });
-    });
-  });
-</script>
 <!-- PERFIL PROPIO CON SUBIDA DE FOTO EN TIEMPO REAL -->
 <div id="profile-view" class="fixed inset-0 overflow-y-auto z-40 hidden bg-white text-black scrollbar-hide">
   <!-- Vista móvil -->
@@ -6360,7 +6175,7 @@ window.fetchSearchInfoFromWikipedia = async function(query) {
           <p id="profile-username" class="text-sm text-gray-600">@nombre_usuario</p>
         </div>
 
-        <div class="grid grid-cols-3 gap-2 mb-4 text-center">
+        <div class="grid grid-cols-4 gap-2 mb-4 text-center">
           <button onclick="openMyStoriesModal()" class="rounded-xl border border-gray-200 py-2">
             <div id="profile-stories-count" class="font-semibold">0</div>
             <div class="text-xs text-gray-500">Historias</div>
@@ -6373,7 +6188,16 @@ window.fetchSearchInfoFromWikipedia = async function(query) {
             <div id="profile-followers" class="font-semibold">0</div>
             <div class="text-xs text-gray-500">Conexiones</div>
           </button>
+          <button onclick="openMyFollowingModal()" class="rounded-xl border border-gray-200 py-2">
+            <div id="profile-following" class="font-semibold">0</div>
+            <div class="text-xs text-gray-500">Siguiendo</div>
+          </button>
         </div>
+
+        <button onclick="openMessages()" class="w-full mb-4 inline-flex items-center justify-center gap-2 bg-gray-900 text-white px-4 py-2.5 rounded-xl font-medium">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8-1.42 0-2.77-.29-4-.8L3 20l1.2-3.8C3.45 14.9 3 13.5 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          Mensajes
+        </button>
 
         <p id="profile-bio" class="text-sm text-gray-600 mb-3 text-center"></p>
 
@@ -7024,6 +6848,8 @@ document.addEventListener('DOMContentLoaded', function() {
   async function handleEditProfileImageUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
+    if (!file.type || !file.type.startsWith('image/')) { alert('Selecciona una imagen válida.'); return; }
+    if (file.size > 5 * 1024 * 1024) { alert('La imagen es muy grande. Máximo 5 MB.'); return; }
 
     const user = firebase.auth().currentUser;
     if (!user) {
@@ -7048,44 +6874,50 @@ document.addEventListener('DOMContentLoaded', function() {
         if (profileImage) profileImage.src = base64String;
         if (profileImageDesktop) profileImageDesktop.src = base64String;
 
-        // Subir a Firebase
-        const response = await fetch('/api/upload-image', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        // Guardar la foto directo en Firebase (base64): en Pages no hay servidor
+        // para /api/upload-image. Se guarda copia en images/profile y se apunta desde el perfil.
+        let finalImageUrl = base64String;
+        try {
+          const response = await fetch('/api/upload-image', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              imageData: base64String,
+              fileName: file.name,
+              userId: user.uid,
+              timestamp: timestamp,
+              contentType: file.type,
+              imageType: 'profile'
+            })
+          });
+          const result = await response.json();
+          if (response.ok && result.imageUrl) finalImageUrl = result.imageUrl;
+        } catch (e) {
+          console.warn('Sin servidor de imágenes, se guarda la foto en base64:', e);
+          await firebase.database().ref('images/profile/' + user.uid + '/' + timestamp).set({
             imageData: base64String,
             fileName: file.name,
-            userId: user.uid,
-            timestamp: timestamp,
-            contentType: file.type,
-            imageType: 'profile'
-          })
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          throw new Error(result.error || 'Error al subir imagen');
+            timestamp: timestamp
+          });
         }
 
         // Actualizar TODAS las imágenes de perfil con la URL final en Firebase
-        if (editProfileImageMobile) editProfileImageMobile.src = result.imageUrl;
-        if (editProfileImageDesktop) editProfileImageDesktop.src = result.imageUrl;
-        if (profileImage) profileImage.src = result.imageUrl;
-        if (profileImageDesktop) profileImageDesktop.src = result.imageUrl;
+        if (editProfileImageMobile) editProfileImageMobile.src = finalImageUrl;
+        if (editProfileImageDesktop) editProfileImageDesktop.src = finalImageUrl;
+        if (profileImage) profileImage.src = finalImageUrl;
+        if (profileImageDesktop) profileImageDesktop.src = finalImageUrl;
 
         // Guardar en Firebase Database para que se sincronice en tiempo real
         await firebase.database().ref('users/' + user.uid).update({
-          profileImage: result.imageUrl
+          profileImage: finalImageUrl
         });
 
         // Actualizar todas las instancias de la imagen del usuario en la página
-        // Esto incluye búsquedas, listas de autores, comentarios, etc.
         const allUserImages = document.querySelectorAll(`img[data-user-id="${user.uid}"]`);
         allUserImages.forEach(img => {
-          img.src = result.imageUrl;
+          img.src = finalImageUrl;
         });
 
         // También actualizar cualquier imagen con src que contenga el userId
@@ -7093,12 +6925,12 @@ document.addEventListener('DOMContentLoaded', function() {
           const searchResults = document.querySelectorAll('img[src*="placeholder"]');
           searchResults.forEach(img => {
             if (img.closest('[data-author-id="' + user.uid + '"]')) {
-              img.src = result.imageUrl;
+              img.src = finalImageUrl;
             }
           });
         }, 100);
 
-        // Mostrar notificación de éxito
+        // Mostrar notificación de éxito        // Mostrar notificación de éxito
         const notification = document.createElement('div');
         notification.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-[9999] flex items-center';
         notification.innerHTML = `
@@ -7164,6 +6996,12 @@ document.addEventListener('DOMContentLoaded', function() {
       </button>
     </div>
 
+    <div id="profile-note" class="hidden mb-4 bg-yellow-50 border border-yellow-200 rounded-xl p-3">
+      <p id="note-text" class="text-sm text-gray-800"></p>
+      <p id="note-time" class="text-xs text-gray-500 mt-1"></p>
+    </div>
+    <button id="add-note-btn" onclick="openNoteModal()" class="hidden w-full mb-4 bg-gray-100 text-gray-900 text-sm font-semibold py-2 rounded-lg">Añadir nota a mi perfil</button>
+
     <div class="mb-4">
       <div id="author-bio" class="text-sm text-gray-900 mt-1 text-center"></div>
       <div id="author-social-links" class="flex space-x-2 mt-2 justify-center"></div>
@@ -7172,6 +7010,10 @@ document.addEventListener('DOMContentLoaded', function() {
     <button id="follow-button" onclick="followAuthor()" class="w-full bg-[#00A2FF] text-white text-sm font-semibold py-2 rounded-lg">
       <span id="follow-button-text">Seguir</span>
     </button>
+    <div class="flex gap-2 mt-2">
+      <button id="message-author-button" onclick="openChatWithAuthor()" class="flex-1 bg-gray-100 text-gray-900 text-sm font-semibold py-2 rounded-lg">Mensaje</button>
+      <button id="block-button" onclick="blockAuthor()" class="flex-1 bg-gray-100 text-red-600 text-sm font-semibold py-2 rounded-lg">Bloquear</button>
+    </div>
 
     <div class="border-t border-gray-200 mt-6 pt-4">
       <div id="author-stories" class="grid grid-cols-3 gap-1"></div>
@@ -7646,6 +7488,15 @@ function previewEditCover(event) {
           </svg>
           <span id="library-toggle-text">Guardar en biblioteca</span>
         </button>
+        <div class="flex gap-2 mt-2">
+          <button id="story-like-btn" onclick="likeStory()" class="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors w-fit">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span id="story-like-count">0</span>
+          </button>
+          <button id="download-story-btn" onclick="downloadStory()" class="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors w-fit">
+            <i class="fas fa-download"></i><span>Descargar</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -7668,15 +7519,15 @@ function previewEditCover(event) {
     <!-- Métricas estilizadas debajo de sinopsis -->
     <div id="detail-metrics" class="flex justify-center gap-4">
       <div class="bg-white p-2 rounded-lg shadow-sm flex flex-col items-center w-20">
-        <span class="text-lg font-bold text-black">3</span>
+        <span class="text-lg font-bold text-black">0</span>
         <p class="text-xs text-[#00A2FF] mt-1">Visitas</p>
       </div>
       <div class="bg-white p-2 rounded-lg shadow-sm flex flex-col items-center w-20">
-        <span class="text-lg font-bold text-black">4.5</span>
+        <span class="text-lg font-bold text-black">—</span>
         <p class="text-xs text-[#00A2FF] mt-1">Calificación</p>
       </div>
       <div class="bg-white p-2 rounded-lg shadow-sm flex flex-col items-center w-20">
-        <span class="text-lg font-bold text-black">12</span>
+        <span class="text-lg font-bold text-black">0</span>
         <p class="text-xs text-[#00A2FF] mt-1">Capítulos</p>
       </div>
     </div>
@@ -8469,119 +8320,62 @@ class SimpleAgeVerificationSystem {
     const overlay = document.getElementById('age-instruction-overlay');
     const instructionText = document.getElementById('age-instruction-text');
 
+    this.stopCamera();
+
+    // La edad NO se adivina por la cara: se decide por la fecha de nacimiento
+    // que declara el usuario. La secuencia de movimientos solo confirma presencia.
     if (instructionText) {
       instructionText.innerHTML = `
-        <div class="animate-spin w-12 h-12 border-4 border-white border-t-transparent rounded-full mx-auto mb-4"></div>
-        <p class="text-white font-bold text-lg">Analizando edad...</p>
-        <p class="text-sm text-gray-300 mt-2">Procesando datos faciales</p>
+        <div class="text-white font-bold text-lg mb-3">Confirma tu fecha de nacimiento</div>
+        <input id="age-birthdate-input" type="date" class="w-full p-3 rounded-xl text-gray-900 text-center" max="${new Date().toISOString().slice(0, 10)}">
+        <button id="age-birthdate-confirm" class="mt-3 w-full bg-white text-gray-900 font-semibold py-3 rounded-xl">Confirmar edad</button>
+        <div class="text-sm text-gray-300 mt-2">Debes tener 18 años o más para verificarte y transmitir en vivo.</div>
       `;
+      const confirmBtn = document.getElementById('age-birthdate-confirm');
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', () => this.finishAgeCheck());
+      }
     }
+  }
 
-    // Simular análisis de edad
-    const ageResult = await this.analyzeAge();
+  async finishAgeCheck() {
+    const input = document.getElementById('age-birthdate-input');
+    const overlay = document.getElementById('age-instruction-overlay');
+    if (!input || !input.value) {
+      showNotification('Selecciona tu fecha de nacimiento.', 'error');
+      return;
+    }
+    const birth = new Date(input.value + 'T00:00:00');
+    if (isNaN(birth.getTime())) {
+      showNotification('Fecha no válida.', 'error');
+      return;
+    }
+    const now = new Date();
+    let age = now.getFullYear() - birth.getFullYear();
+    const m = now.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && now.getDate() < birth.getDate())) age--;
 
-    if (ageResult.isAdult) {
+    if (age >= 18) {
       ageVerificationPassed = true;
+      const user = firebase.auth().currentUser;
+      if (user) {
+        firebase.database().ref('users/' + user.uid).update({
+          ageVerified: true,
+          ageVerifiedAt: Date.now()
+        }).catch(error => console.error('Error guardando verificación de edad:', error));
+      }
       if (overlay) overlay.style.display = 'none';
-
-      showNotification(`✓ Edad verificada: ${ageResult.estimatedAge} años`, 'success');
-
-      setTimeout(() => {
-        nextVerificationStep();
-      }, 2000);
-
+      showNotification('Edad verificada: ' + age + ' años', 'success');
+      setTimeout(() => nextVerificationStep(), 1200);
     } else {
-      // BLOQUEO TOTAL
-      await this.blockUnderageUser(ageResult.estimatedAge);
-
       currentVerificationStep = 7;
       updateVerificationStep();
-
-      // Mostrar edad detectada
       const detectedAgeElement = document.getElementById('detected-age');
-      if (detectedAgeElement) {
-        detectedAgeElement.textContent = ageResult.estimatedAge;
-      }
-
+      if (detectedAgeElement) detectedAgeElement.textContent = age;
       const underageResult = document.getElementById('underage-result');
-      if (underageResult) {
-        underageResult.classList.remove('hidden');
-      }
+      if (underageResult) underageResult.classList.remove('hidden');
+      if (overlay) overlay.style.display = 'none';
     }
-
-    this.stopCamera();
-  }
-
-  async analyzeAge() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Solo si completó TODOS los pasos
-        if (this.completedSteps >= this.instructions.length) {
-          // 70% probabilidad de ser adulto si completó todos los pasos
-          const isAdult = Math.random() > 0.3;
-          const baseAge = isAdult ? Math.floor(Math.random() * 25) + 18 : Math.floor(Math.random() * 5) + 13;
-
-          resolve({
-            isAdult: isAdult,
-            estimatedAge: baseAge,
-            confidence: 0.94
-          });
-        } else {
-          // Si no completó todos los pasos, es menor de edad
-          resolve({
-            isAdult: false,
-            estimatedAge: 16,
-            confidence: 0.88
-          });
-        }
-      }, 3000);
-    });
-  }
-
-  async blockUnderageUser(detectedAge) {
-    const user = firebase.auth().currentUser;
-    if (user && typeof firebase !== 'undefined') {
-      try {
-        await firebase.database().ref('users/' + user.uid).update({
-          ageVerified: false,
-          isUnderage: true,
-          detectedAge: detectedAge,
-          verificationBlocked: true,
-          liveStreamingBlocked: true,
-          premiumBlocked: true,
-          blockedAt: Date.now(),
-          blockedReason: `Menor de edad detectado: ${detectedAge} años`,
-          permanentBlock: true
-        });
-
-        this.disableAllFeatures();
-        showNotification(`Acceso denegado: ${detectedAge} años detectados`, 'error');
-      } catch (error) {
-        console.error('Error bloqueando usuario:', error);
-      }
-    }
-  }
-
-  disableAllFeatures() {
-    // Deshabilitar transmisiones en vivo
-    const liveButtons = document.querySelectorAll('[onclick*="openLiveStreamModal"], [onclick*="Live"]');
-    liveButtons.forEach(button => {
-      button.disabled = true;
-      button.classList.add('opacity-30', 'cursor-not-allowed');
-      button.onclick = () => {
-        showNotification('Función bloqueada: Menor de 18 años', 'error');
-      };
-    });
-
-    // Deshabilitar verificación
-    const verificationButtons = document.querySelectorAll('[onclick*="openVerificationModal"]');
-    verificationButtons.forEach(button => {
-      button.disabled = true;
-      button.classList.add('opacity-30', 'cursor-not-allowed');
-      button.onclick = () => {
-        showNotification('Verificación bloqueada: Menor de 18 años', 'error');
-      };
-    });
   }
 
   stopCamera() {
@@ -8756,34 +8550,19 @@ function showVerificationResult() {
   currentVerificationStep = 7;
   updateVerificationStep();
 
-  // Simular resultado (85% de éxito)
-  const isSuccessful = Math.random() > 0.15;
+  // Sin sorteo: la solicitud queda en revisión, nunca se aprueba ni se rechaza al azar.
+  const successResult = document.getElementById('success-result');
+  if (successResult) successResult.classList.remove('hidden');
 
-  if (isSuccessful) {
-    const successResult = document.getElementById('success-result');
-    if (successResult) {
-      successResult.classList.remove('hidden');
-    }
-
-    // Guardar en Firebase
-    const user = firebase.auth().currentUser;
-    if (user && typeof firebase !== 'undefined') {
-      firebase.database().ref('users/' + user.uid).update({
-        verificationStatus: 'pending',
-        verificationSubmittedAt: Date.now(),
-        ageVerified: ageVerificationPassed
-      }).catch(error => {
-        console.error('Error guardando en Firebase:', error);
-      });
-    }
-  } else {
-    const errorResult = document.getElementById('error-result');
-    const errorMessage = document.getElementById('error-message');
-    if (errorResult) errorResult.classList.remove('hidden');
-    if (errorMessage) {
-      errorMessage.textContent =
-        'No se pudo completar la verificación. Revisa que las imágenes sean claras y los datos correctos.';
-    }
+  const user = firebase.auth().currentUser;
+  if (user && typeof firebase !== 'undefined') {
+    firebase.database().ref('users/' + user.uid).update({
+      verificationStatus: 'pending',
+      verificationSubmittedAt: Date.now(),
+      ageVerified: ageVerificationPassed
+    }).catch(error => {
+      console.error('Error guardando en Firebase:', error);
+    });
   }
 }
 
@@ -9006,44 +8785,7 @@ class IdentityVerificationSystem {
     return matrix[str2.length][str1.length];
   }
 
-  // Verificación de autenticidad del documento (simulada)
-  async verifyDocumentAuthenticity(documentImage) {
-    // Simulación de verificación de autenticidad
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Algoritmo simulado que verifica patrones de seguridad
-        const authenticity = Math.random() > 0.2; // 80% de probabilidad de ser auténtico
-        this.verificationSteps.documentAuthenticity = authenticity;
 
-        resolve({
-          success: authenticity,
-          confidence: authenticity ? 0.9 : 0.1,
-          securityFeatures: {
-            watermark: authenticity,
-            microtext: authenticity,
-            hologram: authenticity
-          }
-        });
-      }, 2000);
-    });
-  }
-
-  // Comparación facial (simulada)
-  async compareFaces(documentPhoto, selfiePhoto) {
-    // Simulación de comparación facial
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const faceMatch = Math.random() > 0.3; // 70% de probabilidad de coincidencia
-        this.verificationSteps.faceMatch = faceMatch;
-
-        resolve({
-          success: faceMatch,
-          confidence: faceMatch ? 0.88 : 0.25,
-          similarity: faceMatch ? 0.92 : 0.45
-        });
-      }, 3000);
-    });
-  }
 
   // Proceso completo de verificación
   async processVerification(formData, files) {
@@ -9068,23 +8810,28 @@ class IdentityVerificationSystem {
       const consistencyResult = this.verifyDataConsistency(formData, ocrResult.extractedText);
       results.steps.consistency = consistencyResult;
 
-      // Paso 3: Verificar autenticidad del documento
-      showVerificationProgress('Verificando autenticidad del documento...');
-      const authenticityResult = await this.verifyDocumentAuthenticity(files.documentFront);
-      results.steps.authenticity = authenticityResult;
+      // Paso 3: la autenticidad del documento y la comparación de rostros NO se
+      // deciden en el cliente (no hay forma honesta de hacerlo sin servidor).
+      // La solicitud queda en revisión manual.
+      showVerificationProgress('Enviando solicitud para revisión...');
+      const reviewUser = (typeof firebase !== 'undefined' && firebase.auth) ? firebase.auth().currentUser : null;
+      if (reviewUser) {
+        await firebase.database().ref('verificationRequests/' + reviewUser.uid).set({
+          status: 'pending',
+          submittedAt: Date.now(),
+          fullName: formData.fullName || '',
+          birthDate: formData.birthDate || '',
+          nationality: formData.nationality || '',
+          documentType: formData.documentType || '',
+          documentNumber: formData.documentNumber || '',
+          ocrConfidence: ocrResult.confidence || 0,
+          ageVerified: (typeof ageVerificationPassed !== 'undefined') ? ageVerificationPassed : false
+        });
+      }
 
-      // Paso 4: Comparación facial
-      showVerificationProgress('Comparando rostros...');
-      const faceResult = await this.compareFaces(files.documentFront, files.selfie);
-      results.steps.faceComparison = faceResult;
-
-      // Calcular resultado final
-      const passedSteps = Object.values(this.verificationSteps).filter(Boolean).length;
-      const totalSteps = Object.keys(this.verificationSteps).length;
-
-      results.confidence = (passedSteps / totalSteps) * 100;
-      results.overall = passedSteps >= 3; // Requiere al menos 3 de 4 pasos
-
+      results.confidence = ocrResult.confidence || 0;
+      results.overall = true;
+      results.pendingReview = true;
       return results;
 
     } catch (error) {
@@ -9598,9 +9345,13 @@ async function uploadMenuProfilePhoto(file, userId) {
     })
   });
 
-  const result = await response.json();
-  if (!response.ok) throw new Error(result.error || 'Error al subir imagen');
-  return result.imageUrl;
+  try {
+    const result = await response.json();
+    if (response.ok && result.imageUrl) return result.imageUrl;
+  } catch (e) {
+    console.warn('Sin servidor de imágenes, se guarda la foto en base64:', e);
+  }
+  return base64String;
 }
 
 async function saveMenuProfileField() {
@@ -10743,77 +10494,65 @@ async function loadPhotos() {
   }
 
   // Función para cargar estadísticas del perfil desde Firebase
+  // Estadísticas del perfil directo de Firebase (sin /api)
   async function loadUserStats(userId) {
     try {
-      const response = await fetch(`/api/user-stats?userId=${userId}`);
-      const result = await response.json();
+      const [storiesSnap, followersSnap, followingSnap] = await Promise.all([
+        firebase.database().ref('stories').orderByChild('userId').equalTo(userId).once('value').catch(() => null),
+        firebase.database().ref('followers/' + userId).once('value').catch(() => null),
+        firebase.database().ref('following/' + userId).once('value').catch(() => null)
+      ]);
 
-      if (!response.ok) {
-        throw new Error(result.error || 'Error al cargar estadísticas');
+      let storiesCount = 0;
+      let totalViews = 0;
+      if (storiesSnap && storiesSnap.exists()) {
+        storiesSnap.forEach(child => {
+          const st = child.val() || {};
+          storiesCount++;
+          totalViews += Number(st.views || 0);
+        });
       }
+      const followersCount = followersSnap ? followersSnap.numChildren() : 0;
+      const followingCount = followingSnap ? followingSnap.numChildren() : 0;
 
-      const stats = result.stats;
-
-      // Actualizar contador de historias en móvil
       const profileStoriesTitle = document.getElementById('profile-stories-title');
-      if (profileStoriesTitle) {
-        profileStoriesTitle.textContent = `${stats.storiesCount} Historias`;
-      }
-
-      // Actualizar en desktop
+      if (profileStoriesTitle) profileStoriesTitle.textContent = `${storiesCount} Historias`;
       const profileStoriesHeader = document.getElementById('profile-stories-header');
+      if (profileStoriesHeader) profileStoriesHeader.textContent = `${storiesCount} Historias`;
       const sidebarStoriesCount = document.getElementById('sidebar-stories-count');
+      if (sidebarStoriesCount) sidebarStoriesCount.textContent = storiesCount;
       const profileStoriesCountDesktop = document.getElementById('profile-stories-count-desktop');
+      if (profileStoriesCountDesktop) profileStoriesCountDesktop.textContent = storiesCount;
       const sidebarTotalViews = document.getElementById('sidebar-total-views');
+      if (sidebarTotalViews) sidebarTotalViews.textContent = totalViews;
       const sidebarFollowersCount = document.getElementById('sidebar-followers-count');
-
-      if (profileStoriesHeader) {
-        profileStoriesHeader.textContent = `${stats.storiesCount} Historias`;
-      }
-      if (sidebarStoriesCount) {
-        sidebarStoriesCount.textContent = stats.storiesCount;
-      }
-      if (profileStoriesCountDesktop) {
-        profileStoriesCountDesktop.textContent = stats.storiesCount;
-      }
-      if (sidebarTotalViews) {
-        sidebarTotalViews.textContent = stats.totalViews;
-      }
-      if (sidebarFollowersCount) {
-        sidebarFollowersCount.textContent = stats.followersCount;
-      }
-
-      // Actualizar seguidores y siguiendo en móvil
+      if (sidebarFollowersCount) sidebarFollowersCount.textContent = followersCount;
       const profileFollowers = document.getElementById('profile-followers');
+      if (profileFollowers) profileFollowers.textContent = formatNumber(followersCount);
       const profileFollowing = document.getElementById('profile-following');
-
-      if (profileFollowers) {
-        profileFollowers.textContent = formatNumber(stats.followersCount);
-      }
-      if (profileFollowing) {
-        profileFollowing.textContent = formatNumber(stats.followingCount);
-      }
-
-      // Cargar contador de notas en comunidad (compatibilidad con communityNotes y community_notes)
-      Promise.all([
-        firebase.database().ref('communityNotes').orderByChild('authorId').equalTo(userId).once('value').catch(() => null),
-        firebase.database().ref('community_notes').orderByChild('authorId').equalTo(userId).once('value').catch(() => null)
-      ]).then(([camelSnap, snakeSnap]) => {
-        const ids = new Set();
-        if (camelSnap && camelSnap.exists()) camelSnap.forEach(child => ids.add(child.key));
-        if (snakeSnap && snakeSnap.exists()) snakeSnap.forEach(child => ids.add(child.key));
-        const notesCountEl = document.getElementById('profile-notes-count');
-        if (notesCountEl) notesCountEl.textContent = formatNumber(ids.size);
-      });
-
-      // Cargar las historias del usuario
-      loadUserStoriesFromFirebase(userId);
+      if (profileFollowing) profileFollowing.textContent = formatNumber(followingCount);
     } catch (error) {
       console.error('Error al cargar estadísticas:', error);
     }
+
+    // Contador de notas y lista de historias: no dependen de las estadísticas
+    try {
+      const [camelSnap, snakeSnap] = await Promise.all([
+        firebase.database().ref('communityNotes').orderByChild('authorId').equalTo(userId).once('value').catch(() => null),
+        firebase.database().ref('community_notes').orderByChild('authorId').equalTo(userId).once('value').catch(() => null)
+      ]);
+      const ids = new Set();
+      if (camelSnap && camelSnap.exists()) camelSnap.forEach(child => ids.add(child.key));
+      if (snakeSnap && snakeSnap.exists()) snakeSnap.forEach(child => ids.add(child.key));
+      const notesCountEl = document.getElementById('profile-notes-count');
+      if (notesCountEl) notesCountEl.textContent = formatNumber(ids.size);
+    } catch (error) {
+      console.error('Error al cargar contador de notas:', error);
+    }
+    loadUserStoriesFromFirebase(userId);
   }
 
-  // Nueva función para cargar historias desde Firebase
+  // Nueva función para cargar historias desde Firebase  // Nueva función para cargar historias desde Firebase
   async function loadUserStoriesFromFirebase(userId) {
     try {
       const snapshot = await firebase.database().ref('stories').orderByChild('userId').equalTo(userId).once('value');
@@ -11404,11 +11143,11 @@ function openCreatorHub() {
           <div class="flex items-center mb-3">
             <img src="${note.authorImage || 'avatar.svg'}" alt="${note.authorName || 'Usuario'}" class="w-10 h-10 rounded-full mr-3">
             <div>
-              <h3 class="font-bold">${note.authorName || 'Usuario'}</h3>
+              <h3 class="font-bold">${escapeHtml(note.authorName || 'Usuario')}</h3>
               <p class="text-sm text-gray-500">${note.timestamp ? new Date(note.timestamp).toLocaleString() : 'Ahora'}</p>
             </div>
           </div>
-          <p class="mb-3">${note.content || ''}</p>
+          <p class="mb-3">${escapeHtml(note.content || '')}</p>
           ${note.imageUrl ? `<img src="${note.imageUrl}" alt="Imagen de nota" class="w-full rounded-lg mb-3 max-h-96 object-cover">` : ''}
           <div class="flex items-center space-x-4">
             <button id="like-btn-${note.noteId}" onclick="likeNote('${note.noteId}')" class="flex items-center text-[#00A2FF] hover:text-red-600 transition-colors">
@@ -11550,7 +11289,20 @@ function moderarNota(noteId, content) {
 }
 
 function reportNote(noteId) {
-  alert('Función de reporte enviada. El equipo revisará esta nota.');
+  const user = firebase.auth().currentUser;
+  firebase.database().ref('reports').push({
+    type: 'note',
+    noteId: noteId || '',
+    reportedBy: user ? user.uid : null,
+    reason: 'Contenido inapropiado',
+    timestamp: Date.now(),
+    status: 'pending'
+  }).then(() => {
+    alert('Reporte enviado. El equipo lo revisará.');
+  }).catch(error => {
+    console.error('Error al enviar reporte:', error);
+    alert('No se pudo enviar el reporte. Inténtalo de nuevo.');
+  });
 }
 
 async function likeNote(noteId) {
@@ -11702,12 +11454,12 @@ async function likeNote(noteId) {
 
   window.openNoteModal = function() {
     const modal = document.getElementById('note-modal');
-    if (modal) modal.classList.remove('hidden');
+    if (modal) { modal.classList.remove('hidden'); modal.style.display = 'flex'; }
   }
 
   window.closeNoteModal = function() {
     const modal = document.getElementById('note-modal');
-    if (modal) modal.classList.add('hidden');
+    if (modal) { modal.classList.add('hidden'); modal.style.display = 'none'; }
     const input = document.getElementById('note-input');
     if (input) input.value = '';
   }
@@ -12007,31 +11759,38 @@ async function likeNote(noteId) {
       /* Traducciones en portugués */ }
   };
 
+  // Insignia de verificación: la decide el campo isVerified de RTDB (lo escribe
+  // el registro/servidor), nunca una lista de correos en el cliente. El conjunto
+  // de correos verificados se carga una vez al iniciar sesión.
+  window._verifiedEmails = window._verifiedEmails || null;
+  function loadVerifiedEmails() {
+    if (window._verifiedEmails) return;
+    window._verifiedEmails = new Set();
+    try {
+      firebase.database().ref('users').orderByChild('isVerified').equalTo(true).once('value').then(snap => {
+        snap.forEach(child => {
+          const d = child.val() || {};
+          if (d.email) window._verifiedEmails.add(String(d.email).toLowerCase());
+        });
+      }).catch(() => {});
+    } catch (e) { /* sin verificación en línea */ }
+  }
+  if (typeof firebase !== 'undefined' && firebase.auth) {
+    firebase.auth().onAuthStateChanged(() => loadVerifiedEmails());
+  }
   function getVerificationIcon(email) {
-    if (email === "darelvega6@icloud.com" || email === "glamworksappstv@gmail.com" || email === "linapaolaromero99@gmail.com") {
-      return '<img src="https://static.vecteezy.com/system/resources/previews/028/084/106/original/verified-check-mark-icon-png.png" alt="Verificado" class="inline-block w-4 h-4 ml-1">';
+    const list = window._verifiedEmails;
+    if (list && email && list.has(String(email).toLowerCase())) {
+      return '<svg viewBox="0 0 24 24" class="inline-block w-4 h-4 ml-1 align-text-bottom" aria-label="Verificado"><circle cx="12" cy="12" r="10" fill="#00A2FF"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     }
     return "";
   }
 
-  window.resetPassword = function() {
-    const email = emailInput.value;
-    if (!email) {
-      alert("Please enter your email address to reset your password.");
-      return;
-    }
-    firebase.auth().sendPasswordResetEmail(email)
-      .then(() => {
-        alert("A password reset email has been sent.");
-      })
-      .catch(error => {
-        alert("Error sending email: " + error.message);
-      });
-  }
 
   window.addEventListener('load', () => {
     setTimeout(() => {
       const splash = document.getElementById('splash-screen');
+      if (!splash) return;
       splash.style.opacity = '0';
       setTimeout(() => {
         splash.style.display = 'none';
@@ -12127,17 +11886,10 @@ async function likeNote(noteId) {
       const markAsRead = async () => {
         if (!notification.read && notificationsUserId) {
           try {
-            await fetch('/api/notifications', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                action: 'mark-read',
-                userId: notificationsUserId,
-                notificationId: notification.id
-              })
-            });
+            await firebase.database().ref('notifications/' + notificationsUserId + '/' + notification.id).update({ read: true });
+            notification.read = true;
+            const dot = div.querySelector('.unread-dot');
+            if (dot) dot.remove();
           } catch (error) {
             console.error('Error al marcar como leída:', error);
           }
@@ -12156,26 +11908,12 @@ async function likeNote(noteId) {
 
   async function addNotification(userId, message, type = 'info') {
     try {
-      const response = await fetch('/api/notifications', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action: 'add',
-          userId: userId,
-          notification: {
-            message: message,
-            type: type
-          }
-        })
+      await firebase.database().ref('notifications/' + userId).push({
+        message: message,
+        type: type,
+        timestamp: Date.now(),
+        read: false
       });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Error al crear notificación');
-      }
     } catch (error) {
       console.error('Error al crear notificación:', error);
     }
@@ -12202,7 +11940,7 @@ async function likeNote(noteId) {
       if (Notification.permission === "granted") {
         new Notification("Relumia", {
           body: message,
-          icon: "https://cdn-icons-png.flaticon.com/512/907/907822.png",
+          icon: "avatar.svg",
           vibrate: [200, 100, 200]
         });
       } else if (Notification.permission !== "denied") {
@@ -12212,7 +11950,7 @@ async function likeNote(noteId) {
           if (permission === "granted") {
             new Notification("Relumia", {
               body: message,
-              icon: "https://cdn-icons-png.flaticon.com/512/907/907822.png",
+              icon: "avatar.svg",
               vibrate: [200, 100, 200]
             });
           }
@@ -12253,18 +11991,14 @@ async function likeNote(noteId) {
 
         document.getElementById('notifications-modal').classList.remove('hidden');
 
-        // Cargar notificaciones desde Firebase
-        const response = await fetch(`/api/notifications?userId=${currentUser.uid}`);
-        const result = await response.json();
-
-        if (!response.ok) {
-          console.error('Error al cargar notificaciones:', result.error);
-          hideLoader();
-          return;
-        }
-
+        // Cargar notificaciones directo de Firebase
+        const notifSnap = await firebase.database().ref('notifications/' + currentUser.uid).orderByChild('timestamp').limitToLast(100).once('value');
         notificationsUserId = currentUser.uid;
-        allNotifications = result.notifications || [];
+        allNotifications = [];
+        notifSnap.forEach(child => {
+          allNotifications.push({ id: child.key, ...(child.val() || {}) });
+        });
+        allNotifications.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
         setupNotificationFilters();
         renderNotifications(activeNotificationFilter);
         hideLoader();
@@ -12437,6 +12171,8 @@ async function likeNote(noteId) {
   let smsCountdownTimer = null;
 
   function handlePhoneLogin() {
+    alert('El inicio con teléfono aún no está disponible. Inicia sesión con tu correo.');
+    return;
     const countryCode = document.getElementById('countryCode').value;
     const phoneNumber = document.getElementById('phoneInput').value.trim();
 
@@ -12951,11 +12687,14 @@ async function likeNote(noteId) {
     };
 
     try {
-      await fetch('/api/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+      const updates = {};
+      if (payload.email) updates.email = payload.email;
+      if (payload.username) updates.username = payload.username;
+      if (payload.profileImage) updates.profileImage = payload.profileImage;
+      Object.keys(profileOverrides || {}).forEach(k => {
+        if (profileOverrides[k] !== undefined && profileOverrides[k] !== null) updates[k] = profileOverrides[k];
       });
+      await firebase.database().ref('users/' + user.uid).update(updates);
     } catch (error) {
       console.warn('No se pudo sincronizar perfil en Firebase:', error);
     }
@@ -13064,8 +12803,10 @@ async function likeNote(noteId) {
     if (menuUsername) menuUsername.textContent = '@' + (data.username || 'usuario');
     if (closeUsername) closeUsername.textContent = '@' + (data.username || 'usuario');
 
-    document.getElementById('profile-followers').textContent = formatNumber(data.followersCount || 0);
-    document.getElementById('profile-following').textContent = formatNumber(data.followingCount || 0);
+    const profileFollowersEl = document.getElementById('profile-followers');
+    if (profileFollowersEl) profileFollowersEl.textContent = formatNumber(data.followersCount || 0);
+    const profileFollowingEl = document.getElementById('profile-following');
+    if (profileFollowingEl) profileFollowingEl.textContent = formatNumber(data.followingCount || 0);
 
     const usernameDesktop = document.getElementById('profile-username-desktop');
     const followersDesktop = document.getElementById('profile-followers-desktop');
@@ -13264,24 +13005,14 @@ async function likeNote(noteId) {
     btn.innerHTML = '<span class="inline-flex items-center gap-2"><span class="epic-loader" style="width:20px;height:20px;border-radius:6px;"></span><span>Enviando</span></span>';
 
     try {
-      const response = await fetch('/api/send-support-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          problemType,
-          description,
-          userId: user ? user.uid : null
-        })
+      await firebase.database().ref('supportRequests').push({
+        email,
+        problemType,
+        description,
+        userId: user ? user.uid : null,
+        timestamp: Date.now(),
+        status: 'pending'
       });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Error al enviar solicitud');
-      }
 
       document.getElementById('support-form-container').classList.add('hidden');
       document.getElementById('support-success-message').classList.remove('hidden');
@@ -13305,11 +13036,11 @@ async function likeNote(noteId) {
     const user = firebase.auth().currentUser;
     if (!user) return;
 
-    console.log('Abriendo historia:', story); // Debug
 
     window.currentStoryId = story.id;
     window.currentLibraryStory = story;
     updateLibraryButton(story.id);
+    updateStoryLikeButton(story);
     listenForStoryBlock(story.id);
 
     if (user) {
@@ -13380,19 +13111,17 @@ async function likeNote(noteId) {
     const modal = document.getElementById('story-detail-modal');
     const mainAppElement = document.getElementById('main-app');
 
-    console.log('Modal element:', modal); // Debug
-    console.log('MainApp element:', mainAppElement); // Debug
 
     if (modal && mainAppElement) {
       modal.classList.remove('hidden');
       mainAppElement.classList.add('hidden');
-      console.log('Modal mostrado correctamente'); // Debug
     } else {
       console.error('No se pudo encontrar el modal o main-app'); // Debug
     }
   }
 
   function closeStoryDetail() {
+    if (window._storyBlockRef) { window._storyBlockRef.off(); window._storyBlockRef = null; }
     const modal = document.getElementById('story-detail-modal');
     const mainAppElement = document.getElementById('main-app');
 
@@ -13707,18 +13436,20 @@ async function likeNote(noteId) {
       .catch((error) => console.error('Error buscando historias:', error));
 
     if (query) {
-      fetch(`/api/users?q=${encodeURIComponent(query)}&limit=100`)
-        .then((response) => {
-          if (!response.ok) throw new Error('No se pudieron cargar perfiles');
-          return response.json();
-        })
-        .then(data => {
-          const authors = (data.users || []).filter(user => {
+      firebase.database().ref('users').limitToFirst(500).once('value')
+        .then(snap => {
+          const authors = [];
+          snap.forEach(child => {
+            const user = child.val() || {};
+            user.userId = child.key;
+            user.uid = child.key;
             const username = normalizeSearchQuery(user.username || '');
             const displayName = normalizeSearchQuery(user.name || user.displayName || '');
             const email = normalizeSearchQuery(user.email || '');
-            const uid = normalizeSearchQuery(user.userId || user.uid || '');
-            return username.includes(query) || displayName.includes(query) || email.includes(query) || uid.includes(query);
+            const uid = normalizeSearchQuery(child.key);
+            if (username.includes(query) || displayName.includes(query) || email.includes(query) || uid.includes(query)) {
+              authors.push(user);
+            }
           });
           renderProfilesList(authors);
         })
@@ -13739,25 +13470,6 @@ async function likeNote(noteId) {
     });
   }
   renderActiveSearchFilters();
-  async function performSearch(query) {
-    const stories = await loadStoriesFromFirebase();
-    let books = [];
-    stories.forEach(story => {
-      if (story.title && story.title.toLowerCase().includes(query)) books.push(story);
-    });
-    renderBooksCarousel(books);
-    const normalizedQuery = normalizeSearchQuery(query);
-    const usersResponse = await fetch(`/api/users?q=${encodeURIComponent(normalizedQuery)}&limit=100`);
-    const usersData = await usersResponse.json();
-    const authors = (usersData.users || []).filter(user => {
-      const username = normalizeSearchQuery(user.username || '');
-      const displayName = normalizeSearchQuery(user.name || user.displayName || '');
-      const email = normalizeSearchQuery(user.email || '');
-      const uid = normalizeSearchQuery(user.userId || user.uid || '');
-      return username.includes(normalizedQuery) || displayName.includes(normalizedQuery) || email.includes(normalizedQuery) || uid.includes(normalizedQuery);
-    });
-    renderProfilesList(authors);
-  }
 
   function renderBooksCarousel(books) {
     const carousel = document.getElementById('search-books-carousel');
@@ -13809,49 +13521,7 @@ async function likeNote(noteId) {
     });
   }
   /*********************** PERFIL (Propio) **************************/
-  function uploadProfileImage() {
-    document.getElementById('profile-image-input').click();
-  }
 
-  async function handleProfileImageUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const user = firebase.auth().currentUser;
-    if (!user) return;
-
-    try {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const base64String = e.target.result;
-        const timestamp = Date.now();
-
-        const response = await fetch('/api/upload-image', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            imageData: base64String,
-            fileName: file.name,
-            userId: user.uid,
-            timestamp: timestamp,
-            contentType: file.type,
-            imageType: 'profile'
-          })
-        });
-      };
-
-      reader.onerror = (error) => {
-        console.error("Error al convertir la imagen a base64:", error);
-        alert('Error al procesar la imagen');
-      };
-
-      reader.readAsDataURL(file);
-    } catch (error) {
-      console.error("Error al subir imagen de perfil:", error);
-      alert('Error al subir la imagen de perfil');
-    }
-  }
 
   function editUsername() {
     openProfileEdit();
@@ -13996,7 +13666,7 @@ async function likeNote(noteId) {
         notes.forEach(note => {
           notesHTML += `
             <div class="bg-white p-4 rounded-xl border hover:shadow-md transition-shadow">
-              <p class="mb-3">${note.content}</p>
+              <p class="mb-3">${escapeHtml(note.content || '')}</p>
               ${note.imageUrl ? `<img src="${note.imageUrl}" alt="Imagen de la nota" class="w-full rounded-lg mb-3 max-h-48 object-cover">` : ''}
               <div class="flex items-center justify-between text-sm text-gray-500">
                 <span>${new Date(note.timestamp).toLocaleDateString()}</span>
@@ -14021,7 +13691,7 @@ async function likeNote(noteId) {
     if (bottomNav) bottomNav.style.display = 'block';
   }
 
-  function saveProfileEdits() {
+  async function saveProfileEdits() {
     const user = firebase.auth().currentUser;
     if (!user) {
       alert('Debes iniciar sesión');
@@ -14078,6 +13748,20 @@ async function likeNote(noteId) {
 
     console.log('Datos a guardar:', updates);
 
+    const newUsername = (updates.username || '').trim().replace(/^@+/, '');
+    if (!newUsername) {
+      alert('El nombre de usuario no puede estar vacío.');
+      return;
+    }
+    updates.username = newUsername;
+    const takenSnap = await firebase.database().ref('users').orderByChild('username').equalTo(newUsername).once('value');
+    let takenByOther = false;
+    takenSnap.forEach(child => { if (child.key !== user.uid) takenByOther = true; });
+    if (takenByOther) {
+      alert('Ese nombre de usuario ya está en uso. Elige otro.');
+      return;
+    }
+
     firebase.database().ref('users/' + user.uid).update(updates)
       .then(() => {
         console.log('Perfil guardado exitosamente');
@@ -14114,6 +13798,11 @@ async function likeNote(noteId) {
     const authWindow = window.open(authUrl, 'TikTok Authorization', 'width=600,height=700');
 
     window.addEventListener('message', function(event) {
+      if (event.origin !== window.location.origin) return;
+      if (event.data.type === 'tiktok-auth-error') {
+        alert(event.data.message || 'No se pudo conectar TikTok.');
+        return;
+      }
       if (event.data.type === 'tiktok-auth-success') {
         const tiktokUsername = event.data.username;
 
@@ -14207,27 +13896,28 @@ async function likeNote(noteId) {
   }
 
   // Manejar el callback de TikTok (para la página de redirección)
-  if (window.location.pathname === '/tiktok-callback') {
+  if (window.location.pathname.endsWith('/tiktok-callback')) {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const state = urlParams.get('state');
 
     if (code && state) {
-      // Aquí normalmente harías una llamada a tu backend para intercambiar el code por un access token
-      // Por simplicidad, simulamos la obtención del username
-      // En producción, necesitarías un servidor backend para manejar esto de forma segura
-
-      // Enviar mensaje a la ventana principal
+      // El intercambio del código por un token exige un servidor (el secreto de
+      // TikTok no puede vivir en el cliente). Hasta que exista, se avisa con honestidad.
       if (window.opener) {
         window.opener.postMessage({
-          type: 'tiktok-auth-success',
-          username: 'usuario_tiktok' // Esto vendría de la API de TikTok
+          type: 'tiktok-auth-error',
+          message: 'La conexión con TikTok necesita el servidor y aún no está disponible.'
         }, window.location.origin);
       }
     }
   }
   /*********************** PERFIL DEL AUTOR **************************/
   function openAuthorProfile(authorId) {
+    if (!authorId) {
+      alert('Autor no disponible.');
+      return;
+    }
     document.getElementById('story-detail-modal').classList.add('hidden');
 
     // Check if current user is the profile owner
@@ -14250,16 +13940,18 @@ async function likeNote(noteId) {
       if (noteData && noteData.text && noteData.timestamp) {
         const expirationTime = noteData.timestamp + (12 * 60 * 60 * 1000); // 12 hours
         if (Date.now() < expirationTime) {
-          profileNote.classList.remove('hidden');
-          document.getElementById('note-text').textContent = noteData.text;
+          const noteTextEl = document.getElementById('note-text');
+          const noteTimeEl = document.getElementById('note-time');
+          if (profileNote) profileNote.classList.remove('hidden');
+          if (noteTextEl) noteTextEl.textContent = noteData.text;
           const timeLeft = Math.floor((expirationTime - Date.now()) / (60 * 60 * 1000));
-          document.getElementById('note-time').textContent = `Expira en ${timeLeft} horas`;
+          if (noteTimeEl) noteTimeEl.textContent = `Expira en ${timeLeft} horas`;
         } else {
-          profileNote.classList.add('hidden');
+          if (profileNote) profileNote.classList.add('hidden');
           snapshot.ref.remove(); // Remove expired note
         }
       } else {
-        profileNote.classList.add('hidden');
+        if (profileNote) profileNote.classList.add('hidden');
       }
     });
     firebase.database().ref('users/' + authorId).once('value').then(snapshot => {
@@ -14268,7 +13960,7 @@ async function likeNote(noteId) {
         document.getElementById('blocked-error-modal').style.display = "flex";
         return;
       }
-      let authorNameHTML = authorData.name || authorData.username || 'Autor desconocido';
+      let authorNameHTML = escapeHtml(authorData.name || authorData.username || 'Autor desconocido');
       if (authorData.founder) {
         authorNameHTML += ' <span class="founder-tag">Fundador</span>';
       }
@@ -14355,9 +14047,12 @@ async function likeNote(noteId) {
             // Cambiamos el texto a "DIRECTO" y el fondo a verde
             liveLabel.textContent = "DIRECTO";
             liveLabel.className = "absolute top-0 left-0 bg-green-600 text-white px-2 py-1 rounded text-xs";
-            const container = document.getElementById('author-profile-img-container');
-            container.style.position = "relative";
-            container.appendChild(liveLabel);
+            const authorImg = document.getElementById('author-profile-image');
+            const container = authorImg ? authorImg.parentElement : null;
+            if (container) {
+              container.style.position = "relative";
+              container.appendChild(liveLabel);
+            }
           }
           // Agregamos una clase para un borde pulsante de color verde (estilo Duolingo)
           document.getElementById('author-profile-image').classList.add('live-border');
@@ -14400,10 +14095,8 @@ async function likeNote(noteId) {
     if (!currentUser || !currentViewedAuthorId) return;
     const followRef = firebase.database().ref('followers/' + currentViewedAuthorId + '/' + currentUser.uid);
     followRef.once('value').then(snapshot => {
-      const followIcon = document.getElementById('follow-icon');
-      followIcon.src = snapshot.exists() ?
-        "https://cdn-icons-png.flaticon.com/512/907/907822.png" :
-        "https://cdn-icons-png.freepik.com/512/8370/8370007.png";
+      const followText = document.getElementById('follow-button-text');
+      if (followText) followText.textContent = snapshot.exists() ? 'Siguiendo' : 'Seguir';
     });
   }
 
@@ -14411,69 +14104,7 @@ async function likeNote(noteId) {
 
 
 
-  function blockAuthorLegacy() {
-    const currentUser = firebase.auth().currentUser;
-    if (!currentUser || !currentViewedAuthorId) return;
 
-    const blockRef = firebase.database().ref('blocks/' + currentUser.uid + '/' + currentViewedAuthorId);
-    const blockButton = document.getElementById('block-button');
-
-    blockRef.once('value').then(snapshot => {
-      if (snapshot.exists()) {
-        // Desbloquear
-        blockRef.remove().then(() => {
-          blockButton.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-            </svg>`;
-          alert('Usuario desbloqueado');
-        });
-      } else {
-        // Bloquear
-        blockRef.set({
-          blockedAt: Date.now()
-        }).then(() => {
-          blockButton.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>`;
-          alert('Usuario bloqueado');
-        });
-      }
-    });
-  }
-
-  function blockAuthorLegacy2() {
-    const currentUser = firebase.auth().currentUser;
-    if (!currentUser || !currentViewedAuthorId) return;
-
-    const blockRef = firebase.database().ref('blocks/' + currentUser.uid + '/' + currentViewedAuthorId);
-    const blockButton = document.getElementById('block-button');
-
-    blockRef.once('value').then(snapshot => {
-      if (snapshot.exists()) {
-        // Desbloquear
-        blockRef.remove().then(() => {
-          blockButton.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-            </svg>`;
-          alert('Usuario desbloqueado');
-        });
-      } else {
-        // Bloquear
-        blockRef.set({
-          blockedAt: Date.now()
-        }).then(() => {
-          blockButton.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>`;
-          alert('Usuario bloqueado');
-        });
-      }
-    });
-  }
 
   function followUser(userId) {
     const currentUser = firebase.auth().currentUser;
@@ -14502,6 +14133,18 @@ async function likeNote(noteId) {
           });
       }
     });
+  }
+
+  function viewAuthorProfile(userId) {
+    if (!userId) return;
+    openAuthorProfile(userId);
+  }
+
+  function openChatWithAuthor() {
+    if (!currentViewedAuthorId) return;
+    const authorId = currentViewedAuthorId;
+    openMessages();
+    setTimeout(() => openChat(authorId), 450);
   }
 
   function loadFollowersForCurrentProfile() {
@@ -15002,7 +14645,6 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
   }
 
   function openChapterReadModal(storyId, chapterId) {
-    console.log('Abriendo capítulo:', storyId, chapterId); // Debug
 
     // Ocultar el modal de detalle de historia
     const storyDetailModal = document.getElementById('story-detail-modal');
@@ -15019,21 +14661,16 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
     firebase.database().ref('chapters/' + storyId + '/' + chapterId).once('value')
       .then(snapshot => {
       const chapter = snapshot.val();
-      console.log('Datos del capítulo:', chapter); // Debug
 
       if (chapter) {
         document.getElementById('read-chapter-number').textContent = "Capítulo " + chapter.chapterNumber + (chapter.title ? " — " + chapter.title : "");
-        document.getElementById('read-chapter-text').innerHTML = chapter.content.replace(/\n/g, '<br>');
+        document.getElementById('read-chapter-text').innerHTML = escapeHtml(chapter.content || '').replace(/\n/g, '<br>');
         setupStarRating(storyId, chapterId);
 
-        if (!currentEditingStory) {
-          currentEditingStory = {
-            id: storyId,
-            currentChapterId: chapterId
-          };
-        } else {
-          currentEditingStory.currentChapterId = chapterId;
-        }
+        window.currentReadingChapter = {
+          id: storyId,
+          currentChapterId: chapterId
+        };
 
         const user = firebase.auth().currentUser;
         if (user) {
@@ -15042,11 +14679,9 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
 
         // Mostrar el modal de lectura
         const chapterReadModal = document.getElementById('chapter-read-modal');
-        console.log('Modal de lectura:', chapterReadModal); // Debug
 
         if (chapterReadModal) {
           chapterReadModal.classList.remove('hidden');
-          console.log('Modal mostrado correctamente'); // Debug
         } else {
           console.error('No se encontró el modal de lectura'); // Debug
           alert('Error: No se pudo abrir el capítulo');
@@ -15649,6 +15284,14 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
       giftUrl = "https://i.pinimg.com/originals/e2/9c/7b/e29c7bc3faadc09dfcddb6ca11243c6d.gif";
     } else if (gift.giftType === "delfin") {
       giftUrl = "https://media.tenor.com/TyrY0krJG3kAAAAj/milk-and-mocha.gif";
+    } else if (gift.giftType === "cupido") {
+      giftUrl = "https://i.pinimg.com/originals/2d/f8/97/2df897364f655a0b14070a9e2f95d602.gif";
+    } else if (gift.giftType === "Selecciona a Harry") {
+      giftUrl = "https://media2.giphy.com/media/9EnuwMN4qxFoDfnJam/200w.gif";
+    } else if (gift.giftType === "Galaxia Blanca") {
+      giftUrl = "https://64.media.tumblr.com/632f8d471cdef6eb0a5018d125ce6475/tumblr_mv4rb608vh1s5jjtzo1_400.gif";
+    } else if (gift.giftType === "Love Max") {
+      giftUrl = "https://i.pinimg.com/originals/28/89/15/28891591a6c88725b46c3e9774c3aefc.gif";
     } else if (gift.giftType === "fuego") {
       giftUrl = "https://i.pinimg.com/originals/af/8a/27/af8a27bf984e189f6a6bd7a6922075c1.gif";
     }
@@ -16174,7 +15817,9 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
 
 
   function listenForStoryBlock(storyId) {
-    firebase.database().ref('stories/' + storyId + '/blocked').on('value', snapshot => {
+    if (window._storyBlockRef) window._storyBlockRef.off();
+    window._storyBlockRef = firebase.database().ref('stories/' + storyId + '/blocked');
+    window._storyBlockRef.on('value', snapshot => {
       if (snapshot.exists() && snapshot.val() === true) {
         openStoryBlockedModal();
       }
@@ -16481,14 +16126,12 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
           conversationDiv.onclick = () => openChat(otherUserId);
 
           const hasUnread = conversation.unreadCount > 0;
-          const isOnline = Math.random() > 0.5; // Simulado, implementar lógica real de estado
 
           conversationDiv.innerHTML = `
             <div class="flex items-center space-x-3">
               <div class="relative">
                 <img src="${userData.profileImage || 'avatar.svg'}"
                      alt="${userData.username}" class="w-14 h-14 rounded-full object-cover">
-                ${isOnline ? '<div class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>' : ''}
                 ${hasUnread ? '<div class="absolute -top-1 -left-1 w-5 h-5 bg-[#00A2FF] rounded-full flex items-center justify-center"><span class="text-xs text-white font-bold">' + (conversation.unreadCount > 9 ? '9+' : conversation.unreadCount) + '</span></div>' : ''}
               </div>
               <div class="flex-1 min-w-0">
@@ -16567,17 +16210,9 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
       document.getElementById('chat-user-avatar').src = userData.profileImage || 'avatar.svg';
       document.getElementById('chat-user-name').textContent = userData.username || 'Usuario';
 
-      // Simular estado en línea (implementar lógica real)
-      const isOnline = Math.random() > 0.3;
-      if (isOnline) {
-        document.getElementById('chat-user-online-indicator').classList.remove('hidden');
-        document.getElementById('chat-user-status').textContent = 'En línea';
-        document.getElementById('chat-user-status').className = 'text-sm text-green-200';
-      } else {
-        document.getElementById('chat-user-online-indicator').classList.add('hidden');
-        document.getElementById('chat-user-status').textContent = 'Última vez hace ' + Math.floor(Math.random() * 60) + ' min';
-        document.getElementById('chat-user-status').className = 'text-sm text-red-100';
-      }
+      // Sin sistema de presencia: no se muestra ningún estado inventado.
+      document.getElementById('chat-user-online-indicator').classList.add('hidden');
+      document.getElementById('chat-user-status').textContent = '';
     });
 
     // Marcar conversación como leída
@@ -17146,25 +16781,26 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
         const base64String = e.target.result;
         const timestamp = Date.now();
 
-        const response = await fetch('/api/upload-image', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            imageData: base64String,
-            fileName: file.name,
-            userId: user.uid,
-            timestamp: timestamp,
-            contentType: file.type,
-            imageType: 'messages'
-          })
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          throw new Error(result.error || 'Error al subir archivo');
+        let fileUrl = base64String;
+        try {
+          const response = await fetch('/api/upload-image', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              imageData: base64String,
+              fileName: file.name,
+              userId: user.uid,
+              timestamp: timestamp,
+              contentType: file.type,
+              imageType: 'messages'
+            })
+          });
+          const result = await response.json();
+          if (response.ok && result.imageUrl) fileUrl = result.imageUrl;
+        } catch (e) {
+          console.warn('Sin servidor de imágenes, el archivo se envía en base64:', e);
         }
 
         const messageData = {
@@ -17172,7 +16808,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
           receiverId: currentChatUserId,
           type: 'file',
           fileName: file.name,
-          fileUrl: result.imageUrl,
+          fileUrl: fileUrl,
           timestamp: Date.now(),
           read: false
         };
@@ -17275,6 +16911,37 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
 </script>
 <!-- NUEVO SCRIPT: Función para descargar la historia completa y almacenarla offline -->
 <script>
+  function updateStoryLikeButton(story) {
+    const countEl = document.getElementById('story-like-count');
+    if (countEl) countEl.textContent = String(story.likes || 0);
+    const btn = document.getElementById('story-like-btn');
+    if (!btn) return;
+    const user = firebase.auth().currentUser;
+    if (!user || !story.id) { btn.classList.remove('text-red-500'); return; }
+    firebase.database().ref('stories/' + story.id + '/likedBy/' + user.uid).once('value').then(snap => {
+      btn.classList.toggle('text-red-500', snap.exists());
+    }).catch(() => {});
+  }
+
+  function likeStory() {
+    const user = firebase.auth().currentUser;
+    const storyId = window.currentStoryId;
+    if (!user) { alert('Inicia sesión para votar esta historia.'); return; }
+    if (!storyId) return;
+    const likeRef = firebase.database().ref('stories/' + storyId + '/likedBy/' + user.uid);
+    likeRef.once('value').then(snap => {
+      const liked = snap.exists();
+      const op = liked ? likeRef.remove() : likeRef.set(true);
+      return op.then(() => {
+        firebase.database().ref('stories/' + storyId + '/likes').transaction(v => Math.max(0, (v || 0) + (liked ? -1 : 1)));
+        const countEl = document.getElementById('story-like-count');
+        if (countEl) countEl.textContent = String(Math.max(0, (parseInt(countEl.textContent || '0', 10) + (liked ? -1 : 1))));
+        const btn = document.getElementById('story-like-btn');
+        if (btn) btn.classList.toggle('text-red-500', !liked);
+      });
+    }).catch(e => console.error('Error al votar:', e));
+  }
+
   function downloadStory() {
     if (!window.currentStoryId) {
       alert("No se ha seleccionado una historia.");
@@ -17282,8 +16949,8 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
     }
     const storyId = window.currentStoryId;
     const btn = document.getElementById('download-story-btn');
-    const icon = btn.querySelector('i');
-    icon.classList.add('fa-spin');
+    const icon = btn ? btn.querySelector('i') : null;
+    if (icon) icon.classList.add('fa-spin');
     firebase.database().ref('stories/' + storyId).once('value')
       .then(storySnap => {
         const storyData = storySnap.val();
@@ -17298,8 +16965,8 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
               chapter.id = child.key;
               // Se crea un bloque para cada capítulo con título y contenido completo
               chaptersHTML += `<div class="chapter" style="margin-bottom:20px;">
-                  <h3 style="margin-bottom:10px;">Capítulo ${chapter.chapterNumber}${chapter.title ? ' — ' + chapter.title : ''}</h3>
-                  <p style="text-align:justify; white-space: pre-wrap;">${chapter.content}</p>
+                  <h3 style="margin-bottom:10px;">Capítulo ${chapter.chapterNumber}${chapter.title ? ' — ' + escapeHtml(chapter.title) : ''}</h3>
+                  <p style="text-align:justify; white-space: pre-wrap;">${escapeHtml(chapter.content || '')}</p>
                 </div>`;
             });
             storyData.chaptersHTML = chaptersHTML;
@@ -17312,7 +16979,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>${storyData.title}</title>
+  <title>${escapeHtml(storyData.title || 'Historia')}</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
     .cover { max-width: 100%; height: auto; }
@@ -17322,7 +16989,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
   </style>
 </head>
 <body>
-  <h1>${storyData.title}</h1>
+  <h1>${escapeHtml(storyData.title || 'Historia')}</h1>
   <img src="${storyData.coverImage}" alt="Portada" class="cover">
   <div class="chapters">
     ${storyData.chaptersHTML}
@@ -17496,17 +17163,7 @@ function setStoryPublishingState(isPublishing, label = 'Publicar') {
 </div>
 
 <script>
-function openDisneyModal() {
-  const modal = document.getElementById('disney-modal');
-  modal.classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-}
 
-function closeDisneyModal() {
-  const modal = document.getElementById('disney-modal');
-  modal.classList.add('hidden');
-  document.body.style.overflow = 'auto';
-}
 
 function openCalendar() {
   const modal = document.getElementById('calendar-modal');
@@ -17983,8 +17640,10 @@ function analyzeAccount() {
 }
 
 function closeRelumiaStudio() {
-  document.getElementById('beaboo-studio-modal').classList.add('hidden');
-  document.getElementById('story-stats').innerHTML = '';
+  const studioModal = document.getElementById('beaboo-studio-modal');
+  if (studioModal) studioModal.classList.add('hidden');
+  const storyStats = document.getElementById('story-stats');
+  if (storyStats) storyStats.innerHTML = '';
 }
 
 <!-- Script para la vista de Live (Duolingo Live Style) -->
@@ -18038,7 +17697,7 @@ function closeRelumiaStudio() {
       if (snapshot.exists()) {
         // Desbloquear
         blockRef.remove().then(() => {
-          blockButton.innerHTML = `
+          if (blockButton) blockButton.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
             </svg>`;
@@ -18049,7 +17708,7 @@ function closeRelumiaStudio() {
         blockRef.set({
           blockedAt: Date.now()
         }).then(() => {
-          blockButton.innerHTML = `
+          if (blockButton) blockButton.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>`;
@@ -18258,6 +17917,7 @@ function toggleLibrary() {
       title: story.title || 'Sin título',
       coverImage: story.coverImage || 'cover.svg',
       author: story.username || 'Autor desconocido',
+      authorId: story.userId || story.authorId || '',
       savedAt: Date.now()
     }).then(() => updateLibraryButton(story.id));
   }).catch(e => console.error('Error en biblioteca:', e));
@@ -18322,7 +17982,7 @@ function loadLibrary() {
             '<button class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-medium" data-action="remove">Quitar</button>' +
           '</div>' +
         '</div>';
-      card.querySelector('[data-action="read"]').onclick = () => openStoryDetail({ id: item.storyId, title: item.title, coverImage: item.coverImage, username: item.author });
+      card.querySelector('[data-action="read"]').onclick = () => openStoryDetail({ id: item.storyId, title: item.title, coverImage: item.coverImage, username: item.author, userId: item.authorId });
       card.querySelector('[data-action="remove"]').onclick = () => {
         getLibraryRef(item.storyId).remove().then(() => loadLibrary());
       };
@@ -18331,5 +17991,117 @@ function loadLibrary() {
   }).catch(e => console.error('Error cargando biblioteca:', e));
 }
 </script>
+
+<!-- Vista de Mensajes directos -->
+<div id="chat-view" class="fixed inset-0 bg-white z-[220] hidden flex flex-col">
+  <!-- Lista de conversaciones -->
+  <div id="conversations-view" class="flex flex-col h-full">
+    <div class="flex items-center gap-3 px-4 py-3 border-b border-gray-200">
+      <img id="current-user-avatar" src="avatar.svg" alt="Tu foto" class="w-10 h-10 rounded-full object-cover">
+      <h2 class="text-lg font-bold flex-1">Mensajes</h2>
+      <span id="unread-messages-count" class="hidden bg-[#00A2FF] text-white text-xs font-bold px-2 py-1 rounded-full"></span>
+      <button onclick="openNewMessage()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center" aria-label="Nuevo mensaje">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+      </button>
+      <div class="relative">
+        <button onclick="toggleChatOptions()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center" aria-label="Opciones">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>
+        </button>
+        <div id="chat-options-menu" class="hidden absolute right-0 top-11 bg-white border border-gray-200 rounded-xl shadow-lg py-1 w-56 z-10">
+          <button onclick="markAllAsRead()" class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-50">Marcar todos como leídos</button>
+          <button onclick="clearAllChats()" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">Limpiar todos los chats</button>
+        </div>
+      </div>
+      <button onclick="closeChat()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center" aria-label="Cerrar">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="px-4 py-2 border-b border-gray-100">
+      <input type="text" placeholder="Buscar conversaciones" oninput="searchConversations(this.value)" class="w-full p-2.5 bg-gray-100 rounded-full text-sm focus:outline-none">
+    </div>
+    <div id="conversations-container" class="flex-1 overflow-y-auto divide-y divide-gray-100"></div>
+    <div id="no-conversations" class="hidden p-8 text-center text-gray-500">
+      <p class="font-semibold text-gray-700 mb-1">Aún no tienes mensajes</p>
+      <p class="text-sm">Toca + para escribirle a un autor.</p>
+    </div>
+  </div>
+
+  <!-- Chat individual -->
+  <div id="individual-chat-view" class="hidden flex flex-col h-full">
+    <div id="chat-header" class="flex items-center gap-3 px-3 py-2.5 border-b border-gray-200 bg-white">
+      <button onclick="backToConversations()" class="w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center" aria-label="Volver">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="relative">
+        <img id="chat-user-avatar" src="avatar.svg" alt="Foto" class="w-10 h-10 rounded-full object-cover">
+        <span id="chat-user-online-indicator" class="hidden absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p id="chat-user-name" class="font-semibold truncate">Usuario</p>
+        <p id="chat-user-status" class="text-xs text-gray-500"></p>
+      </div>
+      <div class="relative">
+        <button onclick="toggleChatMenu()" class="w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center" aria-label="Menú">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>
+        </button>
+        <div id="chat-menu" class="hidden absolute right-0 top-10 bg-white border border-gray-200 rounded-xl shadow-lg py-1 w-48 z-10">
+          <button onclick="clearCurrentChat()" class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-50">Limpiar chat</button>
+          <button onclick="deleteConversation(currentChatUserId)" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">Eliminar conversación</button>
+        </div>
+      </div>
+    </div>
+    <div id="messages-container" class="flex-1 overflow-y-auto px-4 py-3 bg-gray-50"></div>
+    <div id="typing-indicator" class="hidden px-4 py-1 text-xs text-gray-500"><span id="typing-user-name"></span> está escribiendo…</div>
+    <div id="no-chat-selected" class="hidden flex flex-1 items-center justify-center text-gray-500 text-sm p-8">Selecciona una conversación para empezar a chatear.</div>
+    <div id="message-input-container" class="relative flex items-end gap-2 px-3 py-2.5 border-t border-gray-200 bg-white">
+      <button onclick="attachFile()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0" aria-label="Adjuntar archivo">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.586-6.586a4 4 0 00-5.656-5.656l-6.586 6.586a6 6 0 108.486 8.486L20.5 13"/></svg>
+      </button>
+      <input id="file-input" type="file" class="hidden" onchange="handleFileAttachment(event)">
+      <button onclick="document.getElementById('emoji-picker').classList.toggle('hidden')" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0" aria-label="Emoji">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+      </button>
+      <div id="emoji-picker" class="hidden absolute bottom-20 left-3 bg-white border border-gray-200 rounded-2xl shadow-lg p-2 z-10">
+        <button onclick="insertEmoji('😀')" class="text-2xl p-1">😀</button>
+        <button onclick="insertEmoji('😂')" class="text-2xl p-1">😂</button>
+        <button onclick="insertEmoji('❤️')" class="text-2xl p-1">❤️</button>
+        <button onclick="insertEmoji('🔥')" class="text-2xl p-1">🔥</button>
+        <button onclick="insertEmoji('👏')" class="text-2xl p-1">👏</button>
+        <button onclick="insertEmoji('📚')" class="text-2xl p-1">📚</button>
+      </div>
+      <textarea id="message-input" rows="1" placeholder="Escribe un mensaje…" oninput="handleMessageInput(this)" onkeydown="handleKeyPress(event)" class="flex-1 resize-none bg-gray-100 rounded-2xl px-3 py-2.5 text-sm focus:outline-none max-h-32"></textarea>
+      <button id="send-button" onclick="sendMessage()" disabled class="w-10 h-10 rounded-full bg-[#00A2FF] text-white flex items-center justify-center flex-shrink-0 opacity-50 cursor-not-allowed" aria-label="Enviar">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de nuevo mensaje -->
+<div id="new-message-modal" class="hidden fixed inset-0 bg-black/50 z-[230] items-center justify-center p-4">
+  <div class="bg-white rounded-2xl w-full max-w-md p-5">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-bold">Nuevo mensaje</h3>
+      <button onclick="closeNewMessage()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center" aria-label="Cerrar">✕</button>
+    </div>
+    <input id="author-search" type="text" placeholder="Buscar autor por nombre…" oninput="searchAuthors(this.value)" class="w-full p-3 border border-gray-200 rounded-xl mb-2 focus:outline-none">
+    <div id="authors-results" class="hidden max-h-56 overflow-y-auto border border-gray-100 rounded-xl mb-3"></div>
+    <textarea id="new-message-text" rows="3" placeholder="Escribe tu mensaje…" class="w-full p-3 border border-gray-200 rounded-xl focus:outline-none"></textarea>
+    <button onclick="sendNewMessage()" class="mt-3 w-full bg-[#00A2FF] text-white font-semibold py-3 rounded-xl">Enviar mensaje</button>
+  </div>
+</div>
+
+<!-- Modal para añadir nota de perfil -->
+<div id="note-modal" class="hidden fixed inset-0 bg-black/50 z-[230] items-center justify-center p-4">
+  <div class="bg-white rounded-2xl w-full max-w-sm p-5">
+    <h3 class="text-lg font-bold mb-3">Nota de perfil</h3>
+    <textarea id="note-input" rows="3" maxlength="120" placeholder="Escribe una nota (visible 12 horas)…" class="w-full p-3 border border-gray-200 rounded-xl focus:outline-none"></textarea>
+    <div class="flex gap-2 mt-3">
+      <button onclick="closeNoteModal()" class="flex-1 bg-gray-100 text-gray-900 font-semibold py-2.5 rounded-xl">Cancelar</button>
+      <button onclick="saveNote()" class="flex-1 bg-[#00A2FF] text-white font-semibold py-2.5 rounded-xl">Guardar nota</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

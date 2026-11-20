@@ -63,21 +63,6 @@ function clearSearchResults() {
   if (infoList) infoList.innerHTML = '';
 }
 
-function detectWikipediaEntertainmentType(text) {
-  const normalized = (text || '').toLowerCase();
-
-  const seriesKeywords = ['serie', 'series', 'tv series', 'television series', 'temporada', 'episodio', 'anime'];
-  if (seriesKeywords.some(k => normalized.includes(k))) return 'Serie';
-
-  const movieKeywords = ['película', 'pelicula', 'film', 'movie', 'cine', 'largometraje'];
-  if (movieKeywords.some(k => normalized.includes(k))) return 'Película';
-
-  const bookKeywords = ['libro', 'novela', 'book', 'author', 'autor', 'escritor', 'literatura'];
-  if (bookKeywords.some(k => normalized.includes(k))) return 'Libro';
-
-  return null;
-}
-
 function renderSearchInfoList(items) {
   const infoList = document.getElementById('search-info-list');
   if (!infoList) return;
@@ -88,42 +73,35 @@ function renderSearchInfoList(items) {
   }
 
   const item = items[0];
-  const isXuaProfile = (item?.title || '').toLowerCase() === 'xua xia';
   const showIdentityTags = Boolean(item?.title || item?.isVerified || item?.founderLabel);
   const verifiedBadge = item?.isVerified
-    ? `<span class="inline-flex items-center justify-center w-4 h-4 rounded-full ${isXuaProfile ? 'bg-pink-500 shadow-[0_0_0_3px_rgba(244,114,182,0.18)]' : 'bg-[#1d9bf0]'} text-white text-[10px] font-bold" title="Verified profile">✓</span>`
+    ? `<span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#1d9bf0] text-white text-[10px] font-bold" title="Verified profile">✓</span>`
     : '';
   const founderBadge = item?.founderLabel
-    ? `<span class="inline-flex items-center rounded-full ${isXuaProfile ? 'bg-pink-100 text-pink-700 border border-pink-200' : 'bg-[#f1f5f9] text-[#0f172a]'} text-[10px] font-semibold px-2 py-0.5">${item.founderLabel}</span>`
+    ? `<span class="inline-flex items-center rounded-full bg-[#f1f5f9] text-[#0f172a] text-[10px] font-semibold px-2 py-0.5">${item.founderLabel}</span>`
     : '';
-  const cardClasses = isXuaProfile
-    ? 'relative overflow-hidden bg-gradient-to-br from-[#fff1f7] via-white to-[#ffe4ef] border border-pink-200 rounded-2xl p-4 shadow-[0_10px_30px_rgba(236,72,153,0.18)]'
-    : 'bg-white border border-[#e6e6e6] rounded-2xl p-4 shadow-sm';
-  const responseLabel = isXuaProfile ? 'Valentine Special' : 'Respuesta de IA';
-  const separatorClass = isXuaProfile ? 'border-pink-200/70' : 'border-[#e6e6e6]';
-  const footerTextClass = isXuaProfile ? 'text-pink-600' : 'text-gray-500';
-  const romanticDecor = isXuaProfile
-    ? `<div class="pointer-events-none absolute inset-0"><span class="absolute top-3 right-4 text-pink-300 text-lg">❤</span><span class="absolute bottom-3 left-4 text-pink-200 text-xl">❤</span></div>`
-    : '';
+  const cardClasses = 'bg-white border border-[#e6e6e6] rounded-2xl p-4 shadow-sm';
+  const responseLabel = 'Perfil';
+  const separatorClass = 'border-[#e6e6e6]';
+  const footerTextClass = 'text-gray-500';
 
   infoList.innerHTML = `
-    <article class="${cardClasses}"> 
-      ${romanticDecor}
+    <article class="${cardClasses}">
       <div class="relative flex items-start gap-3">
         <img src="https://i.ibb.co/21fZ5Wkp/IMG-7701.png" alt="Baro" class="w-9 h-9 rounded-full flex-shrink-0">
         <div class="min-w-0 w-full">
-          <p class="text-[11px] font-semibold tracking-wide uppercase ${isXuaProfile ? 'text-pink-500' : 'text-gray-500'} mb-2">${responseLabel}</p>
+          <p class="text-[11px] font-semibold tracking-wide uppercase text-gray-500 mb-2">${responseLabel}</p>
           ${showIdentityTags ? `
             <div class="mb-2 flex flex-wrap items-center gap-2">
-              ${item?.title ? `<span class="text-sm font-semibold ${isXuaProfile ? 'text-pink-700' : 'text-[#111111]'}">${item.title}</span>` : ''}
+              ${item?.title ? `<span class="text-sm font-semibold text-[#111111]">${item.title}</span>` : ''}
               ${verifiedBadge}
               ${founderBadge}
             </div>
           ` : ''}
-          <p id="search-info-typed-text" class="text-sm ${isXuaProfile ? 'text-pink-900' : 'text-[#111111]'} leading-relaxed"></p>
+          <p id="search-info-typed-text" class="text-sm text-[#111111] leading-relaxed"></p>
           <div class="mt-3 pt-3 border-t ${separatorClass} flex items-center gap-2">
             <img src="https://i.ibb.co/21fZ5Wkp/IMG-7701.png" alt="Baro" class="w-4 h-4 rounded-full">
-            <span class="text-[11px] ${footerTextClass}">Generado por Baro</span>
+            <span class="text-[11px] ${footerTextClass}">Perfil de Relumia</span>
           </div>
         </div>
       </div>
@@ -256,17 +234,9 @@ async function getAllStories() {
     }
   }
 
-  try {
-    const response = await fetch('/api/get-stories');
-    if (!response.ok) {
-      throw new Error('No se pudo cargar historias');
-    }
-    const data = await response.json();
-    return data.stories || [];
-  } catch (error) {
-    console.error('Error loading stories from Firebase:', error);
-    return [];
-  }
+  // Sin fallback a /api: en Pages no existe; la ruta principal es loadStoriesFromFirebase.
+  console.warn('loadStoriesFromFirebase no devolvió historias; búsqueda sin resultados.');
+  return [];
 }
 
 async function searchContent(query) {
@@ -305,14 +275,15 @@ async function searchContent(query) {
     console.error('Error buscando historias:', error);
   }
   
-  // Buscar autores
+  // Buscar autores (directo a Firebase RTDB: en Pages no hay /api)
   try {
-    const response = await fetch(`/api/users?q=${encodeURIComponent(query)}&limit=100`);
-    if (!response.ok) {
-      throw new Error('No se pudieron cargar autores');
-    }
-    const data = await response.json();
-    const users = data.users || [];
+    const snapshot = await firebase.database().ref('users').limitToFirst(500).once('value');
+    const users = [];
+    snapshot.forEach(child => {
+      const user = child.val() || {};
+      user.userId = child.key;
+      users.push(user);
+    });
     const authorsContainer = document.getElementById('search-authors-list');
     authorsContainer.innerHTML = '';
 
@@ -353,33 +324,6 @@ async function searchContent(query) {
     }
   } catch (error) {
     console.error('Error buscando autores:', error);
-  }
-}
-
-async function followUser(userId) {
-  const currentUser = firebase.auth().currentUser;
-  if (!currentUser) {
-    alert('Debes iniciar sesión');
-    return;
-  }
-  
-  try {
-    const response = await fetch('/api/following', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        userId: currentUser.uid,
-        targetUserId: userId,
-        action: 'follow'
-      })
-    });
-    if (!response.ok) {
-      throw new Error('No se pudo seguir');
-    }
-    alert('Ahora sigues a este usuario');
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Error al seguir usuario');
   }
 }
 
