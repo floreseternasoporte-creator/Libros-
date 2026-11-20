@@ -3103,60 +3103,76 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 
   <!-- BOTTOM NAVIGATION ESTILO UBER -->
-  <div id="bottom-nav" class="fixed bottom-0 left-0 right-0 bg-white border-t border-uber-line transition-all duration-300 z-[100] shadow-uber-header">
-    <div class="grid grid-cols-6 px-2 py-2 gap-1">
-      <button id="nav-home" data-section="home" class="nav-button flex flex-col items-center py-2 px-1 rounded-xl transition-colors duration-200 active">
-        <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-        </svg>
-        <span class="text-xs font-medium">Inicio</span>
+  <div id="bottom-nav" class="fixed bottom-0 left-0 right-0 z-[100] flex justify-center px-3 pb-3 pointer-events-none transition-all duration-300">
+    <div class="pointer-events-auto w-full max-w-md rounded-full bg-white border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.18)] px-2 py-1.5 grid grid-cols-6 gap-0.5">
+      <button id="nav-home" data-section="home" class="nav-button active">
+        <span class="nav-icon-slot"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg></span>
+        <span class="nav-label">Inicio</span>
       </button>
-      <button id="nav-search" data-section="search" class="nav-button flex flex-col items-center py-2 px-1 rounded-xl transition-colors duration-200">
-        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.35-4.35" />
-        </svg>
-        <span class="text-xs font-medium">Buscar</span>
+      <button id="nav-search" data-section="search" class="nav-button">
+        <span class="nav-icon-slot"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg></span>
+        <span class="nav-label">Buscar</span>
       </button>
-      <button id="nav-create" data-section="create" class="nav-button flex flex-col items-center py-2 px-1 rounded-xl transition-colors duration-200">
-        <div class="w-8 h-8 bg-uber-black rounded-full flex items-center justify-center mb-1 shadow-uber-chip">
-          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-          </svg>
-        </div>
-        <span class="text-xs font-medium">Crear</span>
+      <button id="nav-create" data-section="create" class="nav-button">
+        <span class="nav-icon-slot"><span class="create-fab w-7 h-7 bg-uber-black rounded-full flex items-center justify-center shadow-uber-chip"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg></span></span>
+        <span class="nav-label">Crear</span>
       </button>
-      <button id="nav-community" data-section="community" class="nav-button flex flex-col items-center py-2 px-1 rounded-xl transition-colors duration-200">
-        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-        </svg>
-        <span class="text-xs font-medium">Comunidad</span>
+      <button id="nav-community" data-section="community" class="nav-button">
+        <span class="nav-icon-slot"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /></svg></span>
+        <span class="nav-label">Comunidad</span>
       </button>
-      <button id="nav-library" data-section="library" class="nav-button flex flex-col items-center py-2 px-1 rounded-xl transition-colors duration-200">
-        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
-        </svg>
-        <span class="text-xs font-medium">Biblioteca</span>
+      <button id="nav-library" data-section="library" class="nav-button">
+        <span class="nav-icon-slot"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" /></svg></span>
+        <span class="nav-label">Biblioteca</span>
       </button>
-      <button id="nav-alerts" data-section="alerts" class="nav-button flex flex-col items-center py-2 px-1 rounded-xl transition-colors duration-200">
-        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M13.73 21a2 2 0 01-3.46 0" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-        <span class="text-xs font-medium">Avisos</span>
+      <button id="nav-alerts" data-section="alerts" class="nav-button">
+        <span class="nav-icon-slot"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke-linecap="round" stroke-linejoin="round" /><path d="M13.73 21a2 2 0 01-3.46 0" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+        <span class="nav-label">Avisos</span>
       </button>
     </div>
   </div>
-
   <style>
+    /* Barra inferior ovalada flotante */
+    #bottom-nav {
+      background-color: transparent !important;
+      border-top: none !important;
+    }
+
+    @media (min-width: 1024px) {
+      #bottom-nav {
+        background-color: transparent !important;
+      }
+    }
+
     .nav-button {
       color: #6b7280;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 2px;
+      border-radius: 9999px;
+      transition: background-color 0.2s, color 0.2s;
+      min-width: 0;
+    }
+
+    .nav-button .nav-icon-slot {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-button .nav-label {
+      font-size: 10px;
+      line-height: 1.2;
+      font-weight: 500;
+      white-space: nowrap;
     }
 
     .nav-button.active {
-      color: #111111;
-      background-color: transparent;
+      color: #ffffff;
+      background-color: #111111;
     }
 
     .nav-button:hover {
@@ -3164,11 +3180,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     .nav-button.active:hover {
-      background-color: #eeeeee;
+      background-color: #222222;
+    }
+
+    .nav-button.active .create-fab {
+      background-color: #ffffff;
+    }
+
+    .nav-button.active .create-fab svg {
+      color: #111111;
     }
 
     #bottom-nav.hide {
-      transform: translateY(100%);
+      transform: translateY(120%);
     }
 
     .search-filter-icon-btn {
