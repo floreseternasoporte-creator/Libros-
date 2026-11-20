@@ -180,7 +180,7 @@ async function searchInfoContent(query) {
         title: 'Darel Vega',
         isVerified: true,
         founderLabel: 'Founder · CEO',
-        summary: 'Darel Vega is the current founder and CEO of Baro and Atenis. He was born in Cuba.'
+        summary: 'Darel Vega is the current founder and CEO of Baro and Relumia. He was born in Cuba.'
       }
     ]);
     return;

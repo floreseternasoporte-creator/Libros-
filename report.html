@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reportar contenido - Relumia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+</head>
+<body class="bg-white text-gray-900 font-sans">
+  <div class="max-w-md mx-auto min-h-screen flex flex-col p-6">
+    <a href="index.html" class="text-gray-700 hover:text-black mb-6 inline-block">&larr; Volver a Relumia</a>
+    <h1 class="text-2xl font-bold mb-2">Reportar contenido</h1>
+    <p class="text-gray-600 mb-6">Ay&uacute;danos a mantener Relumia seguro. Revisamos cada reporte.</p>
+    <form id="report-form" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-1" for="report-type">Tipo de reporte</label>
+        <select id="report-type" class="w-full p-4 border border-gray-300 rounded-lg" required>
+          <option value="">Elige un motivo</option>
+          <option value="inappropriate">Contenido inapropiado</option>
+          <option value="spam">Spam</option>
+          <option value="harassment">Acoso</option>
+          <option value="copyright">Derechos de autor</option>
+          <option value="other">Otro</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1" for="report-target">Enlace o nombre del contenido (opcional)</label>
+        <input id="report-target" type="text" placeholder="Pega el enlace o el t&iacute;tulo" class="w-full p-4 border border-gray-300 rounded-lg" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1" for="report-description">Describe lo que pasa</label>
+        <textarea id="report-description" rows="5" minlength="20" required placeholder="Describe el problema con detalle..." class="w-full p-4 border border-gray-300 rounded-lg resize-none"></textarea>
+        <div class="text-xs text-gray-500 mt-1">M&iacute;nimo 20 caracteres</div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1" for="report-email">Tu email (opcional)</label>
+        <input id="report-email" type="email" placeholder="tu@email.com" class="w-full p-4 border border-gray-300 rounded-lg" />
+      </div>
+      <button type="submit" class="w-full bg-black text-white py-4 rounded-lg font-semibold">Enviar reporte</button>
+    </form>
+    <div id="report-success" class="hidden text-center py-12">
+      <div class="text-5xl mb-4">&#10003;</div>
+      <h2 class="text-2xl font-bold mb-2">&iexcl;Reporte enviado!</h2>
+      <p class="text-gray-600 mb-6">Gracias, lo revisaremos lo antes posible.</p>
+      <a href="index.html" class="inline-block bg-black text-white px-6 py-3 rounded-lg font-semibold">Volver a Relumia</a>
+    </div>
+    <p id="report-error" class="hidden text-red-600 text-sm mt-4">No se pudo enviar el reporte. Int&eacute;ntalo de nuevo o usa el Centro de Soporte dentro de la app.</p>
+  </div>
+  <script>
+    const firebaseConfig = {
+    apiKey: "AIzaSyBWBr3sud1_lDPmtLJI42pCBZnco5_vyCc",
+    authDomain: "noble-amp-458106-g0.firebaseapp.com",
+    databaseURL: "https://noble-amp-458106-g0-default-rtdb.firebaseio.com",
+    projectId: "noble-amp-458106-g0",
+    storageBucket: "noble-amp-458106-g0.firebasestorage.app",
+    messagingSenderId: "744574411059",
+    appId: "1:744574411059:web:72a70955f1400df6645e46",
+    measurementId: "G-XEQ1J354HM"
+  };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    document.getElementById('report-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var errorBox = document.getElementById('report-error');
+      errorBox.classList.add('hidden');
+      var user = firebase.auth().currentUser;
+      try {
+        await firebase.database().ref('reports').push({
+          type: document.getElementById('report-type').value,
+          target: document.getElementById('report-target').value || null,
+          description: document.getElementById('report-description').value,
+          email: document.getElementById('report-email').value || null,
+          userId: user ? user.uid : null,
+          createdAt: Date.now(),
+          status: 'pending'
+        });
+        document.getElementById('report-form').classList.add('hidden');
+        document.getElementById('report-success').classList.remove('hidden');
+      } catch (err) {
+        console.error('Error al enviar el reporte:', err);
+        errorBox.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
